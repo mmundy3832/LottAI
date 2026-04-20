@@ -1,0 +1,15 @@
+# LottAI -- Pick 3 autoresearch dependencies
+# Install: pip install -r requirements.txt
+
+# Core data and ML
+numpy>=2.0
+pandas>=2.0
+scipy>=1.10
+scikit-learn>=1.4
+
+# Gradient boosting models
+lightgbm>=4.0
+xgboost>=2.0
+
+# Environment / config
+python-dotenv>=1.0
