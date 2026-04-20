@@ -94,7 +94,7 @@ def _validate_model(m, idx, errors):
         _check_range(m.get("min_samples_split", 6), "model.min_samples_split", errors, f"{prefix}.min_samples_split")
         _check_range(m.get("max_features", 0.6), "model.max_features", errors, f"{prefix}.max_features")
 
-    elif mtype in ("xgb", "lgb"):
+    elif mtype in ("xgb", "lgb", "xgb_gpu", "lgb_gpu"):
         _check_range(m.get("n_estimators", 300), "model.n_estimators", errors, f"{prefix}.n_estimators")
         _check_range(m.get("max_depth", 6), "model.max_depth", errors, f"{prefix}.max_depth")
         _check_range(m.get("learning_rate", 0.05), "model.learning_rate", errors, f"{prefix}.learning_rate")
@@ -110,6 +110,13 @@ def _validate_model(m, idx, errors):
 
     elif mtype == "lr":
         _check_range(m.get("C", 1.0), "model.C", errors, f"{prefix}.C")
+
+    elif mtype == "mlp":
+        _check_range(m.get("mlp_hidden_layers", 1), "model.mlp_hidden_layers", errors, f"{prefix}.mlp_hidden_layers")
+        _check_range(m.get("mlp_layer_size", 100), "model.mlp_layer_size", errors, f"{prefix}.mlp_layer_size")
+        _check_range(m.get("alpha", 0.0001), "model.alpha", errors, f"{prefix}.alpha")
+        _check_range(m.get("learning_rate_init", 0.001), "model.learning_rate_init", errors, f"{prefix}.learning_rate_init")
+        _check_range(m.get("max_iter", 500), "model.max_iter", errors, f"{prefix}.max_iter")
 
 
 def validate_config(config):

@@ -19,7 +19,7 @@ VALID_FEATURE_SETS = ["basic", "recency", "gaps", "positional", "temporal", "mom
 # equipment kept in validator list for backward compat with existing experiments,
 # but excluded from random/LLM proposals by default (use --equipment flag to enable)
 VALID_STAGES = ["select", "poly", "custom_interact", "scale"]
-VALID_MODEL_TYPES = ["et", "xgb", "lgb", "rf", "hgb", "lr"]
+VALID_MODEL_TYPES = ["et", "xgb", "lgb", "rf", "hgb", "lr", "mlp", "xgb_gpu", "lgb_gpu"]
 VALID_SCALE_METHODS = ["standard", "robust", "quantile", "minmax"]
 VALID_CALIB_METHODS = ["isotonic", "sigmoid"]
 VALID_SELECTOR_TARGETS = ["d1", "d2", "d3", "mean"]
@@ -65,6 +65,12 @@ PARAM_RANGES = {
     # model -- hgb
     "model.learning_rate_hgb":       ("float", 0.005, 0.3),
     "model.max_iter":                ("int",   50,   1000),
+
+    # model -- mlp
+    "model.mlp_hidden_layers":       ("int",   1,    3),
+    "model.mlp_layer_size":          ("int",   50,   500),
+    "model.alpha":                   ("float", 0.0001, 1.0),
+    "model.learning_rate_init":      ("float", 0.0001, 0.01),
 }
 
 # ---------------------------------------------------------------------------
@@ -574,6 +580,78 @@ BOOTSTRAP_CONFIGS = [
              "calibrate": False, "calibrate_method": "isotonic", "calibrate_cv": 5},
         ],
     },
+
+    {
+        "description": "GPU XGB single model — full feature set, no pipeline",
+        "feature_sets": ["basic", "recency", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [],
+        "models": [{"type": "xgb_gpu", "weight": 1.0, "n_estimators": 500, "max_depth": 6,
+                    "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+                    "reg_alpha": 0.1, "reg_lambda": 1.0}],
+    },
+    {
+        "description": "GPU LGB single model — full feature set, no pipeline",
+        "feature_sets": ["basic", "recency", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [],
+        "models": [{"type": "lgb_gpu", "weight": 1.0, "n_estimators": 500, "max_depth": 6,
+                    "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+                    "reg_alpha": 0.1, "reg_lambda": 1.0}],
+    },
+    {
+        "description": "GPU XGB + ET ensemble — custom_interact pipeline, 5 features",
+        "feature_sets": ["basic", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [{"stage": "custom_interact", "n_head": 5, "n_tail": 5, "include_ratios": True}],
+        "models": [
+            {"type": "xgb_gpu", "weight": 0.6, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+            {"type": "et", "weight": 0.4, "n_estimators": 300, "max_depth": 15,
+             "min_samples_leaf": 3, "min_samples_split": 6, "max_features": 0.6},
+        ],
+    },
+    {
+        "description": "GPU LGB + ET ensemble — custom_interact pipeline, 5 features",
+        "feature_sets": ["basic", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [{"stage": "custom_interact", "n_head": 5, "n_tail": 5, "include_ratios": True}],
+        "models": [
+            {"type": "lgb_gpu", "weight": 0.6, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+            {"type": "et", "weight": 0.4, "n_estimators": 300, "max_depth": 15,
+             "min_samples_leaf": 3, "min_samples_split": 6, "max_features": 0.6},
+        ],
+    },
+    {
+        "description": "GPU XGB + GPU LGB + ET — winning architecture with GPU boosters",
+        "feature_sets": ["basic", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [{"stage": "custom_interact", "n_head": 5, "n_tail": 5, "include_ratios": True}],
+        "models": [
+            {"type": "et", "weight": 0.38, "n_estimators": 300, "max_depth": 15,
+             "min_samples_leaf": 3, "min_samples_split": 6, "max_features": 0.6},
+            {"type": "xgb_gpu", "weight": 0.51, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+            {"type": "lgb_gpu", "weight": 0.18, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+        ],
+    },
+    {
+        "description": "GPU XGB + GPU LGB + ET — winning weights, select pipeline",
+        "feature_sets": ["basic", "gaps", "positional", "temporal", "momentum"],
+        "pipeline": [{"stage": "select", "threshold_multiplier": 1.0, "selector_n_estimators": 200,
+                      "selector_max_depth": 10, "selector_target": "d1"}],
+        "models": [
+            {"type": "et", "weight": 0.38, "n_estimators": 300, "max_depth": 15,
+             "min_samples_leaf": 3, "min_samples_split": 6, "max_features": 0.6},
+            {"type": "xgb_gpu", "weight": 0.51, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+            {"type": "lgb_gpu", "weight": 0.18, "n_estimators": 500, "max_depth": 6,
+             "learning_rate": 0.05, "subsample": 0.8, "colsample_bytree": 0.7,
+             "reg_alpha": 0.1, "reg_lambda": 1.0},
+        ],
+    },
 ]
 
 
@@ -651,6 +729,24 @@ def _rand_model(model_type):
                 "colsample_bytree": _rand_float(0.4, 1.0),
                 "reg_alpha": _rand_float(0.0, 10.0),
                 "reg_lambda": _rand_float(0.1, 10.0)}
+    elif model_type == "xgb_gpu":
+        return {**base,
+                "n_estimators": _rand_int(50, 1000),
+                "max_depth": _rand_int(3, 15),
+                "learning_rate": _rand_float(0.005, 0.3),
+                "subsample": _rand_float(0.4, 1.0),
+                "colsample_bytree": _rand_float(0.4, 1.0),
+                "reg_alpha": _rand_float(0.0, 10.0),
+                "reg_lambda": _rand_float(0.1, 10.0)}
+    elif model_type == "lgb_gpu":
+        return {**base,
+                "n_estimators": _rand_int(50, 1000),
+                "max_depth": _rand_int(3, 15),
+                "learning_rate": _rand_float(0.005, 0.3),
+                "subsample": _rand_float(0.4, 1.0),
+                "colsample_bytree": _rand_float(0.4, 1.0),
+                "reg_alpha": _rand_float(0.0, 10.0),
+                "reg_lambda": _rand_float(0.1, 10.0)}
     elif model_type == "hgb":
         return {**base,
                 "max_iter": _rand_int(50, 1000),
@@ -658,6 +754,13 @@ def _rand_model(model_type):
                 "learning_rate": _rand_float(0.005, 0.3)}
     elif model_type == "lr":
         return {**base, "C": _rand_float(0.001, 100.0)}
+    elif model_type == "mlp":
+        return {**base,
+                "mlp_hidden_layers": _rand_int(1, 3),
+                "mlp_layer_size": _rand_int(50, 500),
+                "alpha": _rand_float(0.0001, 1.0),
+                "learning_rate_init": _rand_float(0.0001, 0.01),
+                "max_iter": _rand_int(200, 1000)}
     raise ValueError(f"Unknown model type: {model_type}")
 
 
@@ -694,6 +797,12 @@ def generate_random_config(allow_equipment=False):
     n_stages = _random.randint(0, 3)
     stage_pool = _random.sample(VALID_STAGES, min(n_stages, len(VALID_STAGES)))
     pipeline = [_rand_stage(s) for s in stage_pool]
+    # Enforce: degree > min(VALID_POLY_DEGREES) requires select to precede poly
+    for i, stage in enumerate(pipeline):
+        if stage.get("stage") == "poly" and stage.get("degree", min(VALID_POLY_DEGREES)) > min(VALID_POLY_DEGREES):
+            prior = [s.get("stage") for s in pipeline[:i]]
+            if "select" not in prior:
+                stage["degree"] = min(VALID_POLY_DEGREES)
 
     # Models: 1-3, all types equally likely
     n_models = _random.randint(1, 3)

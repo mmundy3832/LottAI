@@ -204,6 +204,20 @@ def _clf_expr(m):
             f"reg_lambda={float(m['reg_lambda']):.4f}, "
             f"eval_metric='mlogloss', random_state=42, n_jobs=-1, verbosity=0)"
         )
+    elif mtype == "xgb_gpu":
+        return (
+            f"xgb.XGBClassifier("
+            f"objective='multi:softprob', num_class=10, "
+            f"n_estimators={int(m.get('n_estimators', 300))}, "
+            f"max_depth={int(m.get('max_depth', 6))}, "
+            f"learning_rate={float(m.get('learning_rate', 0.05)):.5f}, "
+            f"subsample={float(m.get('subsample', 0.8)):.4f}, "
+            f"colsample_bytree={float(m.get('colsample_bytree', 0.7)):.4f}, "
+            f"reg_alpha={float(m.get('reg_alpha', 0.0)):.4f}, "
+            f"reg_lambda={float(m.get('reg_lambda', 1.0)):.4f}, "
+            f"device='cuda', "
+            f"eval_metric='mlogloss', random_state=42, verbosity=0)"
+        )
     elif mtype == "lgb":
         return (
             f"lgb.LGBMClassifier("
@@ -215,6 +229,20 @@ def _clf_expr(m):
             f"colsample_bytree={float(m['colsample_bytree']):.4f}, "
             f"reg_alpha={float(m['reg_alpha']):.4f}, "
             f"reg_lambda={float(m['reg_lambda']):.4f}, "
+            f"random_state=42, n_jobs=-1, verbose=-1)"
+        )
+    elif mtype == "lgb_gpu":
+        return (
+            f"lgb.LGBMClassifier("
+            f"objective='multiclass', num_class=10, "
+            f"n_estimators={int(m.get('n_estimators', 300))}, "
+            f"max_depth={int(m.get('max_depth', 6))}, "
+            f"learning_rate={float(m.get('learning_rate', 0.05)):.5f}, "
+            f"subsample={float(m.get('subsample', 0.8)):.4f}, "
+            f"colsample_bytree={float(m.get('colsample_bytree', 0.7)):.4f}, "
+            f"reg_alpha={float(m.get('reg_alpha', 0.0)):.4f}, "
+            f"reg_lambda={float(m.get('reg_lambda', 1.0)):.4f}, "
+            f"device='gpu', "
             f"random_state=42, n_jobs=-1, verbose=-1)"
         )
     elif mtype == "hgb":
@@ -231,6 +259,18 @@ def _clf_expr(m):
             f"C={float(m.get('C', 1.0)):.4f}, "
             f"max_iter=2000, "
             f"random_state=42, n_jobs=-1)"
+        )
+    elif mtype == "mlp":
+        n_layers = int(m.get("mlp_hidden_layers", 1))
+        layer_size = int(m.get("mlp_layer_size", 100))
+        hidden = tuple([layer_size] * n_layers)
+        return (
+            f"MLPClassifier("
+            f"hidden_layer_sizes={hidden}, "
+            f"alpha={float(m.get('alpha', 0.0001)):.6f}, "
+            f"learning_rate_init={float(m.get('learning_rate_init', 0.001)):.6f}, "
+            f"max_iter={int(m.get('max_iter', 500))}, "
+            f"random_state=42)"
         )
     raise ValueError(f"Unknown model type: {mtype}")
 

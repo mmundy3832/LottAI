@@ -271,10 +271,14 @@ def main():
                         help="Skip experiment IDs already in live_eval_results_v2.jsonl")
     parser.add_argument("--dry-run",  action="store_true",
                         help="Count candidates and exit without running")
+    parser.add_argument("--jsonl",    type=str, default=None,
+                        help="Path to experiments JSONL file (default: experiments_v3.jsonl)")
+    parser.add_argument("--ids",      type=str, default=None,
+                        help="Comma-separated experiment IDs to evaluate (e.g. 1471,1486,1494)")
     args = parser.parse_args()
 
     log_msg(f"\n{'='*60}")
-    log_msg(f"live_eval_v2.py  --n={args.n}  --resume={args.resume}")
+    log_msg(f"live_eval_v2.py  --n={args.n}  --resume={args.resume}  --jsonl={args.jsonl}  --ids={args.ids}")
     log_msg(f"All 4 draw times combined")
     log_msg(f"{'='*60}")
 
@@ -293,8 +297,9 @@ def main():
     prepare_v2.precompute_all_features()
 
     # Load experiments
-    all_entries = load_jsonl(_JSONL_V3)
-    log_msg(f"Loaded {len(all_entries)} total entries from {_JSONL_V3}")
+    jsonl_path = os.path.join(_DIR, args.jsonl) if args.jsonl and not os.path.isabs(args.jsonl) else (args.jsonl if args.jsonl else _JSONL_V3)
+    all_entries = load_jsonl(jsonl_path)
+    log_msg(f"Loaded {len(all_entries)} total entries from {jsonl_path}")
 
     # Keep only successful ones with config + val result
     successful = [
@@ -318,6 +323,12 @@ def main():
         done_ids = {e.get("experiment_id") for e in load_jsonl(_OUT_JSONL)}
         candidates = [e for e in candidates if e.get("experiment_id") not in done_ids]
         log_msg(f"Remaining after --resume filter: {len(candidates)}")
+
+    # Apply --ids filter
+    if args.ids:
+        id_set = {int(x.strip()) for x in args.ids.split(",") if x.strip()}
+        candidates = [e for e in candidates if e.get("experiment_id") in id_set]
+        log_msg(f"Remaining after --ids filter: {len(candidates)}  (requested: {sorted(id_set)})")
 
     log_msg(f"Will evaluate: {len(candidates)} experiments")
 
