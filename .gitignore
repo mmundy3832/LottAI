@@ -19,6 +19,9 @@ pick3all_live.csv
 # Logs
 *.log
 
+# Derived/cached data (regeneratable)
+autoresearch/.feature_cache_v*/
+
 # Large outputs
 conversation_history/
 

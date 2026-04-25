@@ -1,0 +1,386 @@
+{
+  "spec_ref": "PHASE2_PLAN.md",
+  "project_title": "LottAI Phase 2 — Council of Experts + Autonomous Prediction Loop",
+  "created_at": "2026-04-25T00:00:00Z",
+  "updated_at": "2026-04-25T00:00:00Z",
+  "status": "pending",
+  "tasks": [
+    {
+      "id": "task-001",
+      "name": "Council Selection Module",
+      "description": "council.py: selects 10 diverse high-performing experts from the experiment ledger using live_optimal_ev as the score and model_fingerprint diversity as a constraint. Persists council.json.",
+      "acceptance_criteria": [
+        "council.py --rebuild reads experiments_v4.jsonl + live_eval_results_v2.jsonl and writes council.json with exactly 10 entries",
+        "No two council members share the same model_fingerprint (sorted tuple of model types)",
+        "All selected members have a live_optimal_ev score (have been live-evaluated)",
+        "council.json contains for each member: exp_num, config dict, live_optimal_ev, val_optimal_ev, model_fingerprint, pipeline_fingerprint, date_admitted",
+        "council.py --show prints current council sorted by live_optimal_ev",
+        "council.py --validate confirms all 10 configs pass config_validator.validate_config()"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-001-a", "name": "Define council.json schema and load/save helpers", "status": "pending" },
+        { "id": "task-001-b", "name": "Implement model_fingerprint and pipeline_fingerprint derivation from config", "status": "pending" },
+        { "id": "task-001-c", "name": "Implement greedy diversity-aware selection: score by live_ev, reject fingerprint duplicates", "status": "pending" },
+        { "id": "task-001-d", "name": "Add --rebuild, --show, --validate CLI flags via argparse", "status": "pending" },
+        { "id": "task-001-e", "name": "Write tests/test_council_selection.py covering diversity constraint, min live-eval requirement, schema validation", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/council.py",
+          "autoresearch/council.json",
+          "autoresearch/tests/test_council_selection.py"
+        ],
+        "reference_patterns": [
+          "autoresearch/live_eval_v2.py -- live_eval_results_v2.jsonl schema and loading pattern",
+          "autoresearch/config_validator.py -- validate_config() for schema check",
+          "autoresearch/config_space.py -- VALID_MODEL_TYPES for fingerprint construction"
+        ],
+        "notes": "model_fingerprint = tuple(sorted(m['type'] for m in config['models'])). pipeline_fingerprint = tuple(s['stage'] for s in config.get('pipeline', [])). Greedy selection: iterate live_ev descending, add to council if model_fingerprint not already represented. council.json is git-tracked (it is derived metadata, not raw live data)."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-002",
+      "name": "Prediction Engine",
+      "description": "predictor.py: retrains all council models on data through the most recent draw, collects per-digit probability vectors, computes weighted ensemble, finds optimal-K ticket recommendation.",
+      "acceptance_criteria": [
+        "predictor.py --council council.json outputs a ranked 1000-combo probability matrix",
+        "Each council member's models are trained on rows 0 through (last live draw index)",
+        "Ensemble weights are softmax-normalized live_optimal_ev scores",
+        "Optimal K is computed as argmax_k(top_k_hit_rate * 500 - k) over k=1..20",
+        "Output JSON contains: top_k, expected_ev, predictions list [{combo, probability}] sorted descending",
+        "Runs in under 60 minutes for 10 council members on beastmode hardware",
+        "Prediction uses only training+live data features; live outcomes are never passed to any LLM"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-002-a", "name": "Extend template_engine.py or create a prediction-mode render that captures clf objects and predict_proba output instead of val score", "status": "pending" },
+        { "id": "task-002-b", "name": "Build 'next draw' feature vector using prepare_v3.build_features on last live row index", "status": "pending" },
+        { "id": "task-002-c", "name": "Implement weighted ensemble: softmax weights, averaged P(d1/d2/d3) vectors across members", "status": "pending" },
+        { "id": "task-002-d", "name": "Compute 1000-combo probability matrix and find optimal K via EV formula", "status": "pending" },
+        { "id": "task-002-e", "name": "Output prediction JSON to stdout and/or file", "status": "pending" },
+        { "id": "task-002-f", "name": "Write tests/test_predictor.py with mock council (known priors, verify correct weighted average)", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/predictor.py",
+          "autoresearch/template_engine.py",
+          "autoresearch/prepare_v3.py"
+        ],
+        "reference_patterns": [
+          "autoresearch/template_engine.py _render_models() -- clf training pattern",
+          "autoresearch/live_eval_v2.py -- how live rows are appended to full_df for feature building",
+          "autoresearch/runner_v4.py -- how experiment code is executed and results extracted"
+        ],
+        "notes": "The cleanest approach is a new template render mode (e.g. live_eval=False, predict_mode=True) that trains on train+val+test+live rows and then calls clf.predict_proba([[X_next]]) for each digit. The next draw feature context is row index = len(full_df) + len(live_df), which means we build features for a hypothetical row whose 'previous draw' is the last live draw. Softmax weights: w_i = exp(live_ev_i) / sum(exp(live_ev_j))."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-003",
+      "name": "Live Data Updater",
+      "description": "live_update.py: downloads the four Texas Lottery CSV files, filters to rows after the training cutoff (2026-02-13), appends only new rows to the *_live.csv files, rebuilds pick3all_live.csv.",
+      "acceptance_criteria": [
+        "live_update.py downloads all four draw-time CSVs from Texas Lottery URLs",
+        "Only rows with draw date > last known date in each live file are appended (no duplicates)",
+        "pick3all_live.csv is rebuilt from the four updated individual files",
+        "Returns count of new rows added per draw time",
+        "Handles network failure gracefully: logs error, leaves existing files unchanged",
+        "Runs in under 30 seconds under normal network conditions"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-003-a", "name": "Implement download_csv(url) with retry logic (3 attempts, 5s backoff)", "status": "pending" },
+        { "id": "task-003-b", "name": "Implement append_new_rows(downloaded_df, live_path, cutoff_date) that appends only rows after last known date", "status": "pending" },
+        { "id": "task-003-c", "name": "Implement rebuild_combined(four_live_paths, combined_path) sorted by date", "status": "pending" },
+        { "id": "task-003-d", "name": "Add --dry-run flag that reports new row counts without writing", "status": "pending" },
+        { "id": "task-003-e", "name": "Write tests/test_live_update.py with mock HTTP responses", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/live_update.py"
+        ],
+        "reference_patterns": [
+          "BRIEFING.md -- Texas Lottery CSV download URLs",
+          "autoresearch/live_eval_v2.py _build_combined_live() -- existing combine logic to reuse"
+        ],
+        "notes": "Download URLs are in BRIEFING.md. The existing live_eval_v2.py already has _build_combined_live() -- extract it into live_update.py as the canonical implementation and import it back in live_eval_v2.py to avoid duplication. Training cutoff is 2026-02-13 (constant, not hardcoded -- define TRAINING_CUTOFF in a constants module or reuse from prepare_v3)."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-004",
+      "name": "Prediction Ledger",
+      "description": "prediction_ledger.py: writes one JSONL record per prediction before the draw, then fills in actual_combo/hit/hit_at_k after draw results are available. Provides running statistics for the whitepaper.",
+      "acceptance_criteria": [
+        "write_prediction(prediction_id, draw_slot, predicted_draw_date, predictions, council_meta) appends a record to prediction_ledger.jsonl",
+        "update_outcome(prediction_id, actual_combo) fills in actual_combo, hit (bool), hit_at_k (int or null) for the matching record",
+        "hit_at_k is the smallest K such that actual_combo appears in top-K predictions, or null if not in top-20",
+        "get_statistics() returns hit rate at K=1,5,10,16,20, mean EV vs random baseline, count by draw_slot",
+        "prediction_ledger.py --stats prints current statistics to stdout",
+        "Records are append-only; update_outcome rewrites only the matching line"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-004-a", "name": "Define prediction record schema as a dataclass or TypedDict", "status": "pending" },
+        { "id": "task-004-b", "name": "Implement write_prediction() that appends to prediction_ledger.jsonl", "status": "pending" },
+        { "id": "task-004-c", "name": "Implement update_outcome() that rewrites the matching line with actual result", "status": "pending" },
+        { "id": "task-004-d", "name": "Implement get_statistics() with hit rate at K breakpoints and EV comparison", "status": "pending" },
+        { "id": "task-004-e", "name": "Add --stats and --update flags to CLI", "status": "pending" },
+        { "id": "task-004-f", "name": "Write tests/test_prediction_ledger.py (write, update, stats calculation)", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/prediction_ledger.py",
+          "autoresearch/prediction_ledger.jsonl"
+        ],
+        "reference_patterns": [
+          "autoresearch/runner_v4.py -- JSONL append-only write pattern",
+          "autoresearch/experiments_v4.jsonl -- JSONL schema pattern"
+        ],
+        "notes": "update_outcome reads all lines, finds matching prediction_id, updates the dict, rewrites the file. This is safe at <10K records. prediction_id format: '{YYYY-MM-DD}T{HH:MM:SS}_{draw_slot}' e.g. '2026-04-26T10:27:00_morning'. hit_at_k: iterate sorted predictions, find first K where actual_combo appears in combos[0:K]. Random baseline EV = 500 * 0.001 - 1 = -0.50."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-005",
+      "name": "Analysis Generator",
+      "description": "analysis.py: produces a 150-300 word writeup for each prediction using a local LLM (Ollama/MiniMax). Input is prediction metadata and council composition only — no raw live draw data is passed to the LLM.",
+      "acceptance_criteria": [
+        "generate_analysis(prediction_result, council_meta) returns a string of 150-300 words",
+        "Input to LLM contains: top-K combos, per-digit confidence spread, council size and top live EV, but NOT raw live draw history",
+        "Falls back to a template-generated summary if LLM is unreachable",
+        "Output is suitable for direct inclusion in Telegram message",
+        "generate_analysis completes in under 60 seconds"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-005-a", "name": "Define LLM prompt template that summarizes prediction without exposing live data", "status": "pending" },
+        { "id": "task-005-b", "name": "Implement Ollama API call (POST /api/generate) with timeout and retry", "status": "pending" },
+        { "id": "task-005-c", "name": "Implement template fallback for LLM unavailability", "status": "pending" },
+        { "id": "task-005-d", "name": "Write tests/test_analysis.py with mock Ollama response and fallback path", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/analysis.py"
+        ],
+        "reference_patterns": [
+          "autoresearch/runner_v4.py -- existing Ollama API call pattern (POST /api/chat)",
+          "autoresearch/ga_ops.py -- LLM prompt construction pattern"
+        ],
+        "notes": "The LLM prompt should describe the prediction in terms of signal strength (e.g. 'the d1 model shows 47% confidence on digit 5, well above the 10% uniform baseline') rather than raw data rows. Use minimax-m2.7:cloud via Ollama. Live data boundary: never include actual draw outcomes, live CSV data, or live_optimal_ev comparisons in the LLM prompt -- only the current prediction output."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-006",
+      "name": "Telegram Notifier",
+      "description": "telegram_bot.py: formats the prediction output and analysis writeup into a Telegram message and sends it via the Bot API to the configured chat. Handles send failures gracefully.",
+      "acceptance_criteria": [
+        "send_prediction(prediction_result, analysis_text) sends a formatted message to TELEGRAM_CHAT_ID",
+        "Message includes: draw slot + date, top-K combo list formatted as NNN, buy count, expected EV, analysis text",
+        "TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are read from environment variables (never hardcoded)",
+        "Send failure logs the error and returns False without raising",
+        "Message length stays under Telegram's 4096 character limit; truncates analysis if needed",
+        "send_prediction completes in under 10 seconds under normal network conditions"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-006-a", "name": "Implement format_message(prediction_result, analysis_text) returning a string under 4096 chars", "status": "pending" },
+        { "id": "task-006-b", "name": "Implement send_telegram(message, bot_token, chat_id) using requests POST to Bot API sendMessage endpoint", "status": "pending" },
+        { "id": "task-006-c", "name": "Read credentials from environment variables; raise clear error if missing at startup", "status": "pending" },
+        { "id": "task-006-d", "name": "Write tests/test_telegram_bot.py with mock requests response (success + failure)", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/telegram_bot.py"
+        ],
+        "reference_patterns": [
+          "autoresearch/runner_v4.py -- environment variable loading pattern (.env via dotenv or os.environ)"
+        ],
+        "notes": "Telegram Bot API endpoint: https://api.telegram.org/bot{TOKEN}/sendMessage with JSON body {chat_id, text, parse_mode='Markdown'}. Combo format: bold the combo string e.g. *123*. Message template: header line, blank line, numbered combo list with probability, blank line, buy/EV summary, blank line, analysis. No external dependencies beyond requests (already in requirements.txt)."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-007",
+      "name": "GA Discovery Runner",
+      "description": "ga_discovery.py: launches a fixed-size batch of GA/random experiments (default 10) as a background subprocess using runner_v4.py. Does not block the prediction pipeline.",
+      "acceptance_criteria": [
+        "ga_discovery.py --n 10 launches runner_v4.py --resume --max (current_count+10) as a subprocess",
+        "Process runs in background; ga_discovery.py returns immediately after launch",
+        "Subprocess inherits the venv and working directory correctly",
+        "Subprocess stdout/stderr appended to autoresearch_v4.log",
+        "ga_discovery.py --wait blocks until subprocess completes (used in testing)",
+        "ga_discovery.py --status reports whether a discovery subprocess is currently running"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-007-a", "name": "Determine current experiment count from experiments_v4.jsonl and compute --max target", "status": "pending" },
+        { "id": "task-007-b", "name": "Launch runner_v4.py as subprocess.Popen with stdout/stderr appended to log", "status": "pending" },
+        { "id": "task-007-c", "name": "Write PID to .discovery.pid file so --status can check if still running", "status": "pending" },
+        { "id": "task-007-d", "name": "Add --n, --wait, --status CLI flags", "status": "pending" },
+        { "id": "task-007-e", "name": "Write tests/test_ga_discovery.py with mock subprocess (verify correct --max is computed)", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/ga_discovery.py",
+          "autoresearch/.discovery.pid"
+        ],
+        "reference_patterns": [
+          "autoresearch/runner_v4.py -- CLI flags available (--resume, --max, --random-frac, --llm-frac)"
+        ],
+        "notes": "Current experiment count: sum(1 for line in open('experiments_v4.jsonl') if line.strip()). Launch: subprocess.Popen([sys.executable, 'runner_v4.py', '--resume', '--max', str(target), '--random-frac', '0.25'], stdout=log_fh, stderr=subprocess.STDOUT). Store pid in .discovery.pid; check os.kill(pid, 0) for --status. .discovery.pid should be gitignored."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-008",
+      "name": "Model Promotion Checker",
+      "description": "promotion_checker.py: after each GA discovery batch, identifies new experiments that could displace council members, runs live_eval on candidates, and updates council.json if a better member is found.",
+      "acceptance_criteria": [
+        "promotion_checker.py reads council.json to get council floor (weakest member's live_optimal_ev) and last_checked_exp",
+        "Candidate filter: new experiments (exp_num > last_checked_exp) with val_optimal_ev > council floor",
+        "Runs live_eval_v2.py --jsonl experiments_v4.jsonl --ids <candidates> on filtered set",
+        "If any candidate's live_ev > council floor AND its model_fingerprint is not already in council: replace weakest member",
+        "If candidate has same fingerprint as existing member but higher live_ev: replace that member",
+        "All promotions appended to council_history.jsonl with old_member, new_member, live_ev_delta, timestamp",
+        "council.json updated_at timestamp updated after any changes",
+        "council.py --show reflects new composition after promotion"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-008-a", "name": "Implement get_candidates(council, experiments_jsonl) returning exp_nums to evaluate", "status": "pending" },
+        { "id": "task-008-b", "name": "Implement run_live_eval_on_candidates(exp_nums) calling live_eval_v2.py subprocess", "status": "pending" },
+        { "id": "task-008-c", "name": "Implement promotion decision: diversity-aware replacement logic", "status": "pending" },
+        { "id": "task-008-d", "name": "Implement council_history.jsonl append for each promotion event", "status": "pending" },
+        { "id": "task-008-e", "name": "Write tests/test_promotion_checker.py with synthetic experiments and council state", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/promotion_checker.py",
+          "autoresearch/council.py",
+          "autoresearch/council_history.jsonl"
+        ],
+        "reference_patterns": [
+          "autoresearch/council.py (task-001) -- model_fingerprint derivation, council load/save",
+          "autoresearch/live_eval_v2.py -- --ids flag added in current session"
+        ],
+        "notes": "council floor = min(m['live_optimal_ev'] for m in council['members']). last_checked_exp stored in council.json and updated after each check. Diversity-aware replacement: if candidate fingerprint already in council, only replace the existing member with that fingerprint if candidate live_ev is strictly higher. Promotion is conservative -- only promote if clearly better, not just marginally."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-009",
+      "name": "Orchestrator",
+      "description": "orchestrator.py: the main cron entry point. Runs Track A (update data → predict → notify → log) synchronously, then launches Track B (GA discovery → promotion check) in background.",
+      "acceptance_criteria": [
+        "orchestrator.py runs Track A end-to-end and exits 0 on success",
+        "Any Track A step failure logs the error and continues to the next step where possible (prediction failure still runs GA)",
+        "Track B (ga_discovery + promotion_checker) is launched as background subprocess before orchestrator exits",
+        "Total Track A wall time logged to orchestrator.log",
+        "orchestrator.py --dry-run runs Track A but skips Telegram send and prediction ledger write",
+        "orchestrator.py --skip-discovery skips Track B entirely",
+        "All steps log to autoresearch/orchestrator.log with timestamps"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-009-a", "name": "Implement Track A sequence: live_update → predictor → analysis → telegram → ledger", "status": "pending" },
+        { "id": "task-009-b", "name": "Add per-step error handling: catch, log, continue where safe", "status": "pending" },
+        { "id": "task-009-c", "name": "Launch Track B as background subprocess (ga_discovery --n 10 && promotion_checker)", "status": "pending" },
+        { "id": "task-009-d", "name": "Add --dry-run and --skip-discovery flags", "status": "pending" },
+        { "id": "task-009-e", "name": "Write tests/test_orchestrator.py with all steps mocked, verifying call order and error isolation", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["autoresearch/"],
+        "likely_files": [
+          "autoresearch/orchestrator.py",
+          "autoresearch/orchestrator.log"
+        ],
+        "reference_patterns": [
+          "autoresearch/live_update.py (task-003)",
+          "autoresearch/predictor.py (task-002)",
+          "autoresearch/analysis.py (task-005)",
+          "autoresearch/telegram_bot.py (task-006)",
+          "autoresearch/prediction_ledger.py (task-004)",
+          "autoresearch/ga_discovery.py (task-007)"
+        ],
+        "notes": "Track A is synchronous and must complete before the next draw (~2 hours). Track B runs async and may complete in the background. If live_update returns 0 new draws (draw hasn't posted yet), orchestrator should log and exit gracefully without running prediction -- the prediction context would be stale. draw_slot and predicted_draw_date derived from current datetime + schedule knowledge."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    },
+    {
+      "id": "task-010",
+      "name": "Docker and Cron Setup",
+      "description": "Dockerfile, docker-compose.yaml, and crontab for the OpenBrain container. Mounts the LottAI data directory, sets correct timezone for Texas draw schedule, loads .env credentials.",
+      "acceptance_criteria": [
+        "docker-compose up builds and starts the container without errors",
+        "Container has access to /mnt/beastmode/lottai via a bind mount",
+        "Cron fires orchestrator.py at the four Texas Lottery draw times (Mon-Sat, Central Time)",
+        "All Python dependencies from requirements.txt are installed in the container",
+        "TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, OLLAMA_HOST, and LOTTAI_ROOT are injected from .env",
+        ".env is gitignored; .env.example documents all required variables",
+        "Container logs cron output to a mounted log file visible on the host"
+      ],
+      "status": "pending",
+      "subtasks": [
+        { "id": "task-010-a", "name": "Write Dockerfile: python:3.11-slim base, install requirements.txt, copy autoresearch/", "status": "pending" },
+        { "id": "task-010-b", "name": "Write docker-compose.yaml: bind mount /mnt/beastmode/lottai, env_file .env, TZ=America/Chicago", "status": "pending" },
+        { "id": "task-010-c", "name": "Write crontab with four draw-time entries calling orchestrator.py", "status": "pending" },
+        { "id": "task-010-d", "name": "Write .env.example documenting TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, OLLAMA_HOST, LOTTAI_ROOT", "status": "pending" },
+        { "id": "task-010-e", "name": "Test container build and cron scheduling with --dry-run mode", "status": "pending" }
+      ],
+      "hints": {
+        "likely_dirs": ["docker/"],
+        "likely_files": [
+          "docker/Dockerfile",
+          "docker/docker-compose.yaml",
+          "docker/crontab",
+          ".env.example"
+        ],
+        "reference_patterns": [
+          "requirements.txt -- Python dependencies to install",
+          "autoresearch/orchestrator.py (task-009) -- entry point",
+          "BRIEFING.md -- draw times: Morning 10am, Day 12:27pm, Evening 6pm, Night 10:12pm Central"
+        ],
+        "notes": "Cron draw-time entries (Central, which is UTC-5 standard / UTC-6 daylight -- use TZ env var and let cron handle it): '27 10 * * 1-6', '57 12 * * 1-6', '30 18 * * 1-6', '42 22 * * 1-6'. The container needs GPU passthrough if xgb_gpu/lgb_gpu models are in the council -- add 'deploy: resources: reservations: devices' in compose. Ollama is on the host; OLLAMA_HOST should use host.docker.internal or the host's LAN IP."
+      },
+      "result": null,
+      "attempts": 0,
+      "error_log": []
+    }
+  ],
+  "progress": {
+    "total_tasks": 10,
+    "completed": 0,
+    "failed": 0,
+    "blocked": 0
+  }
+}

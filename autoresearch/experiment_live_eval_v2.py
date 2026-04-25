@@ -48,99 +48,37 @@ _LIVE_PATH = r'/mnt/beastmode/lottai/autoresearch/../pick3all_live.csv'
 
 
 
-# DESCRIPTION: Remove temporal, robust scale first, poly stage, lgb+xgb blend, deeper models with regularization
+# DESCRIPTION: RANDOM: random: basic+recency+gaps | sca | hgb
 
 # -- Feature Loading --
 X_train_raw = load_cached_features('train', ['basic', 'recency', 'gaps', 'positional', 'momentum'])
 X_val_raw = load_cached_features('val', ['basic', 'recency', 'gaps', 'positional', 'momentum'])
 
-# -- Stage: scale (robust) --
-_scaler = RobustScaler()
+# -- Stage: scale (minmax) --
+_scaler = MinMaxScaler()
 X_train_scale = _scaler.fit_transform(X_train_raw)
 X_val_scale = _scaler.transform(X_val_raw)
-
-# -- Stage: custom_interact (n_head=12, n_tail=10, ratios=True) --
-_ci_n_head = min(12, X_train_scale.shape[1])
-_ci_n_tail = min(10, X_train_scale.shape[1])
-_ci_f1_tr = X_train_scale[:, :_ci_n_head]
-_ci_f2_tr = X_train_scale[:, -_ci_n_tail:]
-_ci_f1_va = X_val_scale[:, :_ci_n_head]
-_ci_f2_va = X_val_scale[:, -_ci_n_tail:]
-_ci_parts_tr, _ci_parts_va = [], []
-for _ci_i in range(_ci_n_head):
-    for _ci_j in range(_ci_n_tail):
-        _ci_parts_tr.append(_ci_f1_tr[:, _ci_i] * _ci_f2_tr[:, _ci_j])
-        _ci_parts_va.append(_ci_f1_va[:, _ci_i] * _ci_f2_va[:, _ci_j])
-        _ci_parts_tr.append(_ci_f1_tr[:, _ci_i] / (_ci_f2_tr[:, _ci_j] + 1e-6))
-        _ci_parts_va.append(_ci_f1_va[:, _ci_i] / (_ci_f2_va[:, _ci_j] + 1e-6))
-_ci_tr = np.column_stack(_ci_parts_tr) if _ci_parts_tr else np.zeros((X_train_scale.shape[0], 1))
-_ci_va = np.column_stack(_ci_parts_va) if _ci_parts_va else np.zeros((X_val_scale.shape[0], 1))
-_ci_tr = np.nan_to_num(_ci_tr, nan=0.0, posinf=1e6, neginf=-1e6)
-_ci_va = np.nan_to_num(_ci_va, nan=0.0, posinf=1e6, neginf=-1e6)
-X_train_custom_interact = np.hstack([X_train_scale, _ci_tr])
-X_val_custom_interact = np.hstack([X_val_scale, _ci_va])
-
-# -- Stage: poly (degree=2, interaction_only=False, top_k=300) --
-_poly = PolynomialFeatures(degree=2,
-    include_bias=False, interaction_only=False)
-_Xtr_poly_full = _poly.fit_transform(X_train_custom_interact)
-_Xva_poly_full = _poly.transform(X_val_custom_interact)
-_poly_var = np.var(_Xtr_poly_full, axis=0)
-_top_k = min(300, _Xtr_poly_full.shape[1])
-_top_idx = np.argsort(_poly_var)[-_top_k:]
-X_train_poly = np.hstack([X_train_custom_interact, _Xtr_poly_full[:, _top_idx]])
-X_val_poly = np.hstack([X_val_custom_interact, _Xva_poly_full[:, _top_idx]])
-
-# -- Stage: select (threshold=1.35x mean, target=mean) --
-_sel_et = ExtraTreesClassifier(
-    n_estimators=250, max_depth=12,
-    random_state=42, n_jobs=-1
-)
-_sel_et.fit(X_train_poly, ((y_train_d1 + y_train_d2 + y_train_d3) // 3))
-from sklearn.feature_selection import SelectFromModel as _SFM
-_selector = _SFM(_sel_et, prefit=True, threshold='1.35*mean')
-X_train_select = _selector.transform(X_train_poly)
-X_val_select = _selector.transform(X_val_poly)
 
 # -- Per-Digit Model Training --
 _digit_targets_train = [y_train_d1, y_train_d2, y_train_d3]
 
 _clf_list_0 = []
-# Model 0: lgb (weight=0.5500)
+# Model 0: hgb (weight=1.0000)
 _digit_probs_0 = []
 for _d_idx, _y_d in enumerate(_digit_targets_train):
-    _base = lgb.LGBMClassifier(objective='multiclass', num_class=10, n_estimators=350, max_depth=5, learning_rate=0.06000, subsample=0.7000, colsample_bytree=0.6000, reg_alpha=0.5000, reg_lambda=0.8000, random_state=42, n_jobs=-1, verbose=-1)
-    _clf = CalibratedClassifierCV(estimator=_base,
-        method='isotonic',
-        cv=5)
-    _clf.fit(X_train_select, _y_d)
+    _clf = HistGradientBoostingClassifier(max_iter=971, max_depth=7, learning_rate=0.14990, random_state=42)
+    _clf.fit(X_train_scale, _y_d)
     _clf_list_0.append(_clf)
-    _proba = _clf.predict_proba(X_val_select)
+    _proba = _clf.predict_proba(X_val_scale)
     _fp = np.zeros((n_val, 10))
     for _ci, _cls in enumerate(_clf.classes_):
         _fp[:, int(_cls)] = _proba[:, _ci]
     _digit_probs_0.append(_fp)
 
-_clf_list_1 = []
-# Model 1: xgb (weight=0.4500)
-_digit_probs_1 = []
-for _d_idx, _y_d in enumerate(_digit_targets_train):
-    _base = xgb.XGBClassifier(objective='multi:softprob', num_class=10, n_estimators=350, max_depth=5, learning_rate=0.06000, subsample=0.7000, colsample_bytree=0.6000, reg_alpha=0.5000, reg_lambda=0.8000, eval_metric='mlogloss', random_state=42, n_jobs=-1, verbosity=0)
-    _clf = CalibratedClassifierCV(estimator=_base,
-        method='isotonic',
-        cv=5)
-    _clf.fit(X_train_select, _y_d)
-    _clf_list_1.append(_clf)
-    _proba = _clf.predict_proba(X_val_select)
-    _fp = np.zeros((n_val, 10))
-    for _ci, _cls in enumerate(_clf.classes_):
-        _fp[:, int(_cls)] = _proba[:, _ci]
-    _digit_probs_1.append(_fp)
-
 # -- Weighted Ensemble --
 _digit_probs_combined = []
 for _d in range(3):
-    _digit_probs_combined.append(0.550000 * _digit_probs_0[_d] + 0.450000 * _digit_probs_1[_d])
+    _digit_probs_combined.append(1.000000 * _digit_probs_0[_d])
 
 # -- Combo Probability Matrix (Val) --
 prob_matrix = np.zeros((n_val, NUM_COMBOS))
@@ -184,45 +122,20 @@ X_live_raw = build_features(_combined_df, _live_indices, ['basic', 'recency', 'g
 
 X_live_scale = _scaler.transform(X_live_raw)
 
-_ci_f1_lv = X_live_scale[:, :_ci_n_head]
-_ci_f2_lv = X_live_scale[:, -_ci_n_tail:]
-_ci_parts_lv = []
-for _ci_i in range(_ci_n_head):
-    for _ci_j in range(_ci_n_tail):
-        _ci_parts_lv.append(_ci_f1_lv[:, _ci_i] * _ci_f2_lv[:, _ci_j])
-        _ci_parts_lv.append(_ci_f1_lv[:, _ci_i] / (_ci_f2_lv[:, _ci_j] + 1e-6))
-_ci_lv = np.column_stack(_ci_parts_lv) if _ci_parts_lv else np.zeros((X_live_scale.shape[0], 1))
-_ci_lv = np.nan_to_num(_ci_lv, nan=0.0, posinf=1e6, neginf=-1e6)
-X_live_custom_interact = np.hstack([X_live_scale, _ci_lv])
-
-_Xlv_poly_full = _poly.transform(X_live_custom_interact)
-X_live_poly = np.hstack([X_live_custom_interact, _Xlv_poly_full[:, _top_idx]])
-
-X_live_select = _selector.transform(X_live_poly)
-
 # -- Live Model Predictions --
 _digit_probs_live_0 = []
 for _d_idx in range(3):
     _clf_lv = _clf_list_0[_d_idx]
-    _proba_lv = _clf_lv.predict_proba(X_live_select)
+    _proba_lv = _clf_lv.predict_proba(X_live_scale)
     _fp_lv = np.zeros((n_live, 10))
     for _ci, _cls in enumerate(_clf_lv.classes_):
         _fp_lv[:, int(_cls)] = _proba_lv[:, _ci]
     _digit_probs_live_0.append(_fp_lv)
 
-_digit_probs_live_1 = []
-for _d_idx in range(3):
-    _clf_lv = _clf_list_1[_d_idx]
-    _proba_lv = _clf_lv.predict_proba(X_live_select)
-    _fp_lv = np.zeros((n_live, 10))
-    for _ci, _cls in enumerate(_clf_lv.classes_):
-        _fp_lv[:, int(_cls)] = _proba_lv[:, _ci]
-    _digit_probs_live_1.append(_fp_lv)
-
 # -- Live Weighted Ensemble --
 _digit_probs_live_combined = []
 for _d in range(3):
-    _digit_probs_live_combined.append(0.550000 * _digit_probs_live_0[_d] + 0.450000 * _digit_probs_live_1[_d])
+    _digit_probs_live_combined.append(1.000000 * _digit_probs_live_0[_d])
 
 # -- Live Combo Probability Matrix --
 prob_matrix_live = np.zeros((n_live, NUM_COMBOS))
