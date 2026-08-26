@@ -12,7 +12,8 @@ import numpy as np
 from pathlib import Path
 
 BASE = Path("/mnt/beastmode/lottai")
-PRETEST_DIR = BASE / "pretest"
+DATA_DIR = BASE / "data"
+PRETEST_DIR = DATA_DIR / "pretest"
 
 DRAW_TIMES = {
     "morning": 0,
@@ -91,7 +92,7 @@ def load_pretest(draw_name):
 
 
 def load_winners_live(draw_name):
-    path = BASE / f"pick3{draw_name}_live.csv"
+    path = DATA_DIR / f"pick3{draw_name}_live.csv"
     df = pd.read_csv(path, header=None, names=WIN_COLS,
                      dtype=str, keep_default_na=False)
     df["date"] = pd.to_datetime(
@@ -175,7 +176,7 @@ print(f"Rows with pretest data: {pretest_populated} ({frac:.1%})")
 print(f"Rows WITHOUT pretest data: {total_rows - pretest_populated}")
 
 # ---- Save ----
-out_path = BASE / "pick3_combined_live.csv"
+out_path = DATA_DIR / "pick3_combined_live.csv"
 final.to_csv(out_path, index=False)
 print(f"\nSaved to {out_path}")
 

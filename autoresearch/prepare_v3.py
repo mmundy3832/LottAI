@@ -25,7 +25,7 @@ NUM_DIGITS = 10
 NUM_POSITIONS = 3
 PICK3_PAYOUT = 500  # $500 for a $1 straight bet
 
-_DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "pick3_combined.csv")
+_DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "pick3_combined.csv")
 
 # ---------------------------------------------------------------------------
 # Box bet constants (precomputed once at module load)

@@ -49,10 +49,11 @@ OLLAMA_CLOUD_PORT = 443
 DEFAULT_MODEL = "minimax-m2.7:cloud"
 DEFAULT_MAX = 200
 
-_JSONL_V3 = os.path.join(_DIR, "experiments_v4.jsonl")
+_RESULTS_DIR = os.path.join(_DIR, "results")
+_JSONL_V3 = os.path.join(_RESULTS_DIR, "experiments_v4.jsonl")
 _EXPERIMENT_V3_FILE = os.path.join(_DIR, "experiment_v4.py")
-_LOG_V3 = os.path.join(_DIR, "autoresearch_v4.log")
-_ERROR_LOG = os.path.join(_DIR, "autoresearch_errors.log")
+_LOG_V3 = os.path.join(_RESULTS_DIR, "autoresearch_v4.log")
+_ERROR_LOG = os.path.join(_RESULTS_DIR, "autoresearch_errors.log")
 
 # ---------------------------------------------------------------------------
 # Boilerplate (identical to v2 -- prepended to every experiment)
@@ -330,12 +331,14 @@ def query_ollama(prompt, model, temperature=0.7, max_tokens=6000):
                 "model": model,
                 "prompt": prompt,
                 "stream": False,
+                "think": False,
                 "options": {
                     "temperature": temperature,
                     "num_predict": max_tokens,
+                    "num_ctx": 32768,
                 },
             },
-            timeout=900,
+            timeout=3600,
         )
         response.raise_for_status()
     except requests.ConnectionError:
@@ -344,7 +347,7 @@ def query_ollama(prompt, model, temperature=0.7, max_tokens=6000):
             f"Is Ollama running? Start it with: ollama serve"
         )
     except requests.Timeout:
-        raise RuntimeError("Ollama request timed out after 900 seconds.")
+        raise RuntimeError("Ollama request timed out after 3600 seconds.")
     except requests.HTTPError as e:
         raise RuntimeError(f"Ollama HTTP error: {e}")
 
@@ -354,7 +357,7 @@ def query_ollama(prompt, model, temperature=0.7, max_tokens=6000):
             f"Unexpected Ollama response format. Keys: {list(data.keys())}"
         )
 
-    resp_text = data["response"]
+    resp_text = _strip_thinking(data["response"])
     eval_count = data.get("eval_count", 0)
     eval_duration = data.get("eval_duration", 0)
     speed = eval_count / (eval_duration / 1e9) if eval_duration > 0 else 0
@@ -435,12 +438,21 @@ def get_population_v3(log, top_n=15):
 
 
 # ---------------------------------------------------------------------------
+# LLM response helpers
+# ---------------------------------------------------------------------------
+
+def _strip_thinking(text):
+    """Remove <think>...</think> reasoning blocks that local models may emit."""
+    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+
+
+# ---------------------------------------------------------------------------
 # LLM JSON extraction
 # ---------------------------------------------------------------------------
 
 def extract_config_json(response):
     """Extract a JSON config dict from LLM response. Returns dict or None."""
-    cleaned = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
+    cleaned = _strip_thinking(response)
 
     # Try ```json...``` block first
     m = re.search(r"```json\s*\n?(.*?)```", cleaned, re.DOTALL)
