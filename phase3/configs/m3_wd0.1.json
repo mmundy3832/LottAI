@@ -1,0 +1,11 @@
+{
+  "run_id": "m3_wd0.1",
+  "model": "m1",
+  "n_layers": 2,
+  "W": 16,
+  "seed": 0,
+  "batch": 512,
+  "lr": 1e-3,
+  "max_steps": 1000000,
+  "weight_decay": 0.1
+}

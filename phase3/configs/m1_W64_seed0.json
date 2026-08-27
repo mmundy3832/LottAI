@@ -1,0 +1,11 @@
+{
+  "run_id": "m1_W64_seed0",
+  "model": "m1",
+  "W": 64,
+  "seed": 0,
+  "batch": 128,
+  "lr": 3e-4,
+  "max_epochs": 50,
+  "patience": 5,
+  "weight_decay": 0.01
+}

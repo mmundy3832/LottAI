@@ -1,0 +1,11 @@
+{
+  "run_id": "m2_W16_seed2",
+  "model": "m2",
+  "W": 16,
+  "seed": 2,
+  "batch": 128,
+  "lr": 0.0003,
+  "max_epochs": 50,
+  "patience": 5,
+  "weight_decay": 0.01
+}
