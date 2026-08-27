@@ -31,12 +31,14 @@ The core bet: **straight $1 ticket pays $500**. If we can push the true hit rate
 
 ```
 /mnt/beastmode/lottai/
-├── pick3morning.csv          training data, frozen at 2026-02-13
-├── pick3day.csv
-├── pick3evening.csv
-├── pick3night.csv
-├── pick3_combined.csv        all 4 draw times interleaved, 15,572 rows
-├── pick3*_live.csv           LIVE DATA -- truly unseen, never in models, update before live_eval
+├── data/
+│   ├── pick3morning.csv       training data, frozen at 2026-02-13
+│   ├── pick3day.csv
+│   ├── pick3evening.csv
+│   ├── pick3night.csv
+│   ├── pick3_combined.csv     all 4 draw times interleaved, 15,572 rows
+│   ├── pick3*_live.csv        LIVE DATA -- truly unseen, never in models, update before live_eval
+│   └── pretest/               machine + ball set assignment CSVs (one per draw time)
 │
 │   *** LIVE FILE UPDATE ***
 │   Update all four _live files before running live_eval or predict.
@@ -46,20 +48,24 @@ The core bet: **straight $1 ticket pays $500**. If we can push the true hit rate
 │     Evening: https://www.texaslottery.com/export/sites/lottery/Games/Pick_3/Winning_Numbers/pick3evening.csv
 │     Night:   https://www.texaslottery.com/export/sites/lottery/Games/Pick_3/Winning_Numbers/pick3night.csv
 │
-├── pretest/                  machine + ball set assignment CSVs (one per draw time)
+├── papers/                    whitepaper.md, WHITEPAPER_PHASE2.md, WHITEPAPER_NOTES.md
+├── plans/                     PHASE2_PLAN.md, PHASE3_PLAN.md, phase2-feature-list.json
+├── phase3/                    Phase 3 work (empty, self-contained by design -- copy not import)
 ├── requirements.txt
-├── .env                      OLLAMA_API_KEY (never committed)
+├── .env                       OLLAMA_API_KEY (never committed)
 │
 └── autoresearch/
-    ├── prepare_v3.py         DATA MODULE -- combined dataset, all 4 draw times, 15,572 rows
-    ├── template_engine.py    renders config dicts to Python experiment code
-    ├── config_space.py       valid config parameter ranges + bootstrap seeds
-    ├── config_validator.py   validates configs before running
-    ├── ga_ops.py             mutation, crossover, LLM exploration operators
-    ├── runner_v4.py          MAIN RUNNER (current) -- GA + LLM + random search loop
-    ├── live_eval_v2.py       evaluate experiments against unseen live data
-    ├── experiments_v4.jsonl  ALL experiment results (1000+ entries, append-only ledger)
-    └── live_eval_results_v2.jsonl  live evaluation scores
+    ├── prepare_v3.py          DATA MODULE -- combined dataset, all 4 draw times, 15,572 rows
+    ├── template_engine.py     renders config dicts to Python experiment code
+    ├── config_space.py        valid config parameter ranges + bootstrap seeds
+    ├── config_validator.py    validates configs before running
+    ├── ga_ops.py              mutation, crossover, LLM exploration operators
+    ├── runner_v4.py           MAIN RUNNER (current) -- GA + LLM + random search loop
+    ├── live_eval_v2.py        evaluate experiments against unseen live data
+    └── results/
+        ├── experiments_v4.jsonl        ALL experiment results (1000+ entries, append-only ledger)
+        ├── lag_analysis_output.json
+        └── live_eval_results_v2.jsonl  live evaluation scores
 ```
 
 ---

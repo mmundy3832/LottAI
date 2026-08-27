@@ -21,7 +21,13 @@ A third, exploratory run tests whether long training with strong weight decay pr
 - Live: pick3all_live.csv, 662 draws, 2026-02-14 to 2026-08-26. Eval only, never in offline training (see project_data_boundary memory).
 - Splits (same as Phase 2 so results compare): train through 2022-05-23 (10,900), val to 2024-04-03 (2,336), test to 2026-02-13 (2,336), live 662.
 
-Token encoding, one draw = 4 tokens: [slot] [d0] [d1] [d2]. Slot vocab 4, digit vocab 10, total vocab 14 plus a pad token. No date, no machine, no ball-set tokens in the base run (Phase 1 found none of these carry signal, and they are a leakage path). Ablation run adds day-of-week and machine ID tokens to check that claim under a 2.0 model.
+Token encoding (D2, decided 2026-08-26: use everything the CSV has), one draw = 9 tokens:
+
+    [slot] [dow] [machine] [bs1] [bs2] [bs3] [d0] [d1] [d2]
+
+Vocab: slot 4, day-of-week 7, machine 11, ball set 170 (shared vocab for the three ball-set positions), digit 10, plus pad. Each token type gets its own embedding table so the model can weight each source by whatever bearing it has; Phase 1 and 2 found none for equipment, and the expectation is the same here. Ablation run drops dow/machine/ball-set tokens to measure their contribution directly.
+
+Leakage rule for the target draw: its slot and dow are known before the draw and are given as input. Its machine and ball-set tokens are given only if they are published before the draw (the pretest files in data/pretest/ suggest they are; confirm against the Texas Lottery release timing before use). If not confirmed, the target draw's equipment tokens are masked and only prior draws' equipment tokens are visible.
 
 Context window W: number of prior draws visible. Chosen values to sweep: 16, 64, 256 draws (64 to 1024 tokens). Default 64. These are my choices, not measured. The sweep is the measurement.
 
@@ -52,7 +58,7 @@ This is supervised learning with lagged targets. It is the same reward as the RL
 
 Lambda is fixed. A learnable lambda drifts toward whatever inflates the multi-lag reward and was parked in discussion on 2026-08-26.
 
-Stage C, online. After each live draw lands: score pending predictions for lags 0..K, take one AdamW step on a replay batch of the newest 64 draws plus 64 sampled from history, predict the next draw, append to the ledger. Learning rate 1e-4 (chosen). Compare against the frozen Stage B model on the same live draws to measure whether online updates help, hurt, or do nothing.
+Stage C, online (D3, decided 2026-08-26: option O5, replica only). The offline Stage B model is frozen and serves as control. A separate replica copy takes one AdamW step per scored live draw on a replay batch of the newest 64 live draws plus 64 sampled from history. Learning rate 1e-4 (chosen). Live draws never enter the offline training set and replica weights are never promoted or reused offline. Report frozen vs replica on the same live draws, all four slots. This is the one sanctioned exception to the live-data boundary, and it is confined to the replica.
 
 ## 5. Matched null and gaming pre-mortem
 
@@ -106,7 +112,7 @@ Reads data/ for the CSVs. Writes only under phase3/. autoresearch/ is frozen as 
 
 ## 10. Decisions for Mark
 
-D2. Token encoding: slot plus 3 digits only, or include day-of-week and machine ID from the start.
-D3. Which target draws count for online Stage C: all four slots, or one slot as in Phase 2 live eval.
-D4. Run Stage C even on a null Stage A/B result (completes the whitepaper) or gate it.
-D5. Directory reorganization before Phase 3 starts (see reply of 2026-08-26).
+D2. Decided: all available columns as tokens (section 2). Pre-draw publication of the target's machine and ball set is unknown, so the target's equipment tokens are masked (default rule in section 2).
+D3. Decided: O5, online replica only, frozen control, all four slots (section 4).
+D4. Deferred until Stage A results are in.
+D5. Done 2026-08-26 (commits b848f3c, 53e5e20).
