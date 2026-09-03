@@ -1,0 +1,396 @@
+{
+  "test_name": "PREREG_EARLY_HIT",
+  "spec_file": "plans/PREREG_EARLY_HIT.md",
+  "run_timestamp": "2026-08-31T10:20:13",
+  "train": {
+    "cutoff_date": "2026-06-05",
+    "n_train_rows": 15956,
+    "n_hist_rows": 15572,
+    "n_live_train_rows": 384
+  },
+  "holdout": {
+    "n_draws": 278,
+    "n_scored": 278,
+    "date_min": "2026-06-06",
+    "date_max": "2026-08-26"
+  },
+  "combo_space": 1000,
+  "top20_size": 20,
+  "chance_baseline_top20_exact": 0.02,
+  "consensus_size": {
+    "min": 13,
+    "median": 31.0,
+    "max": 46,
+    "mean": 30.431654676258994
+  },
+  "chance_baseline_consensus_exact_approx": 0.030431654676258992,
+  "primary": {
+    "observed": 0.2423146473779385,
+    "null_mean": 0.2472287522603978,
+    "null_p95": 0.27848101265822783,
+    "p_value_one_sided": 0.623688155922039,
+    "statistic": "pooled top20 best-in-top20 >=2-of-3 positional match rate, k in {+1,+2}",
+    "ks": [
+      1,
+      2
+    ],
+    "n_perm": 2000,
+    "seed": 42,
+    "n_pairs_pooled": 553,
+    "significant_p_lt_05": false
+  },
+  "secondary": {
+    "exact_top20_hit_k1": {
+      "observed": 0.010830324909747292,
+      "null_mean": 0.018509025270758123,
+      "null_p95": 0.032490974729241874,
+      "p_value_one_sided": 0.8860569715142429,
+      "lag": 1,
+      "set": "top20",
+      "stat": "exact_hit_rate",
+      "n_pairs": 277
+    },
+    "exact_top20_hit_k2": {
+      "observed": 0.018115942028985508,
+      "null_mean": 0.01877355072463768,
+      "null_p95": 0.03260869565217391,
+      "p_value_one_sided": 0.5982008995502249,
+      "lag": 2,
+      "set": "top20",
+      "stat": "exact_hit_rate",
+      "n_pairs": 276
+    },
+    "full_lag_0_5_table": [
+      {
+        "observed": 0.02158273381294964,
+        "null_mean": 0.028715827338129496,
+        "null_p95": 0.046762589928057555,
+        "p_value_one_sided": 0.816591704147926,
+        "lag": 0,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 278
+      },
+      {
+        "observed": 0.3381294964028777,
+        "null_mean": 0.32244424460431653,
+        "null_p95": 0.3669064748201439,
+        "p_value_one_sided": 0.3028485757121439,
+        "lag": 0,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 278
+      },
+      {
+        "observed": 0.0035971223021582736,
+        "null_mean": 0.018778776978417264,
+        "null_p95": 0.03237410071942446,
+        "p_value_one_sided": 0.9970014992503748,
+        "lag": 0,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 278
+      },
+      {
+        "observed": 0.24820143884892087,
+        "null_mean": 0.24793345323741006,
+        "null_p95": 0.29136690647482016,
+        "p_value_one_sided": 0.5287356321839081,
+        "lag": 0,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 278
+      },
+      {
+        "observed": 0.018050541516245487,
+        "null_mean": 0.028494584837545127,
+        "null_p95": 0.04693140794223827,
+        "p_value_one_sided": 0.9075462268865567,
+        "lag": 1,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.33935018050541516,
+        "null_mean": 0.3228772563176895,
+        "null_p95": 0.36823104693140796,
+        "p_value_one_sided": 0.28385807096451776,
+        "lag": 1,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.010830324909747292,
+        "null_mean": 0.018509025270758123,
+        "null_p95": 0.032490974729241874,
+        "p_value_one_sided": 0.8860569715142429,
+        "lag": 1,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.24187725631768953,
+        "null_mean": 0.24713176895306863,
+        "null_p95": 0.2888086642599278,
+        "p_value_one_sided": 0.5997001499250375,
+        "lag": 1,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.028985507246376812,
+        "null_mean": 0.028793478260869566,
+        "null_p95": 0.04710144927536232,
+        "p_value_one_sided": 0.5432283858070964,
+        "lag": 2,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.32608695652173914,
+        "null_mean": 0.3229492753623189,
+        "null_p95": 0.3695652173913043,
+        "p_value_one_sided": 0.48225887056471767,
+        "lag": 2,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.018115942028985508,
+        "null_mean": 0.01877355072463768,
+        "null_p95": 0.03260869565217391,
+        "p_value_one_sided": 0.5982008995502249,
+        "lag": 2,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.2427536231884058,
+        "null_mean": 0.24732608695652172,
+        "null_p95": 0.2898550724637681,
+        "p_value_one_sided": 0.5862068965517241,
+        "lag": 2,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.03272727272727273,
+        "null_mean": 0.028645454545454547,
+        "null_p95": 0.04727272727272727,
+        "p_value_one_sided": 0.3823088455772114,
+        "lag": 3,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 275
+      },
+      {
+        "observed": 0.32,
+        "null_mean": 0.32234909090909086,
+        "null_p95": 0.36745454545454526,
+        "p_value_one_sided": 0.5527236381809095,
+        "lag": 3,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 275
+      },
+      {
+        "observed": 0.01818181818181818,
+        "null_mean": 0.018414545454545458,
+        "null_p95": 0.03272727272727273,
+        "p_value_one_sided": 0.5732133933033483,
+        "lag": 3,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 275
+      },
+      {
+        "observed": 0.2545454545454545,
+        "null_mean": 0.24696363636363633,
+        "null_p95": 0.2909090909090909,
+        "p_value_one_sided": 0.4197901049475262,
+        "lag": 3,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 275
+      },
+      {
+        "observed": 0.025547445255474453,
+        "null_mean": 0.028737226277372265,
+        "null_p95": 0.04744525547445255,
+        "p_value_one_sided": 0.6736631684157921,
+        "lag": 4,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 274
+      },
+      {
+        "observed": 0.2956204379562044,
+        "null_mean": 0.32206934306569346,
+        "null_p95": 0.3686131386861314,
+        "p_value_one_sided": 0.8440779610194903,
+        "lag": 4,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 274
+      },
+      {
+        "observed": 0.01824817518248175,
+        "null_mean": 0.018534671532846717,
+        "null_p95": 0.032846715328467155,
+        "p_value_one_sided": 0.5737131434282858,
+        "lag": 4,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 274
+      },
+      {
+        "observed": 0.20072992700729927,
+        "null_mean": 0.24721532846715327,
+        "null_p95": 0.291970802919708,
+        "p_value_one_sided": 0.9725137431284357,
+        "lag": 4,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 274
+      },
+      {
+        "observed": 0.014652014652014652,
+        "null_mean": 0.028673992673992673,
+        "null_p95": 0.04395604395604396,
+        "p_value_one_sided": 0.9545227386306847,
+        "lag": 5,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 273
+      },
+      {
+        "observed": 0.304029304029304,
+        "null_mean": 0.32198534798534795,
+        "null_p95": 0.36996336996337,
+        "p_value_one_sided": 0.7576211894052973,
+        "lag": 5,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 273
+      },
+      {
+        "observed": 0.01098901098901099,
+        "null_mean": 0.01881135531135531,
+        "null_p95": 0.03296703296703297,
+        "p_value_one_sided": 0.8905547226386806,
+        "lag": 5,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 273
+      },
+      {
+        "observed": 0.21978021978021978,
+        "null_mean": 0.24745787545787545,
+        "null_p95": 0.2893772893772894,
+        "p_value_one_sided": 0.8685657171414293,
+        "lag": 5,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 273
+      }
+    ],
+    "negative_control_k_minus1_minus2": [
+      {
+        "observed": 0.010869565217391304,
+        "null_mean": 0.028831521739130436,
+        "null_p95": 0.04710144927536232,
+        "p_value_one_sided": 0.9870064967516242,
+        "lag": -2,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.19927536231884058,
+        "null_mean": 0.32221557971014486,
+        "null_p95": 0.36594202898550726,
+        "p_value_one_sided": 1.0,
+        "lag": -2,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.0,
+        "null_mean": 0.01868659420289855,
+        "null_p95": 0.03260869565217391,
+        "p_value_one_sided": 1.0,
+        "lag": -2,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.14855072463768115,
+        "null_mean": 0.24688224637681158,
+        "null_p95": 0.286231884057971,
+        "p_value_one_sided": 1.0,
+        "lag": -2,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 276
+      },
+      {
+        "observed": 0.02527075812274368,
+        "null_mean": 0.029021660649819495,
+        "null_p95": 0.04693140794223827,
+        "p_value_one_sided": 0.7061469265367316,
+        "lag": -1,
+        "set": "consensus",
+        "stat": "exact_hit_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.16606498194945848,
+        "null_mean": 0.3225631768953069,
+        "null_p95": 0.36480144404332115,
+        "p_value_one_sided": 1.0,
+        "lag": -1,
+        "set": "consensus",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.021660649819494584,
+        "null_mean": 0.018805054151624544,
+        "null_p95": 0.032490974729241874,
+        "p_value_one_sided": 0.4107946026986507,
+        "lag": -1,
+        "set": "top20",
+        "stat": "exact_hit_rate",
+        "n_pairs": 277
+      },
+      {
+        "observed": 0.1588447653429603,
+        "null_mean": 0.2472490974729242,
+        "null_p95": 0.2888086642599278,
+        "p_value_one_sided": 1.0,
+        "lag": -1,
+        "set": "top20",
+        "stat": "pos_ge2_rate",
+        "n_pairs": 277
+      }
+    ]
+  },
+  "runtime_seconds": {
+    "train_time_a_s": 92.31928610801697,
+    "train_time_b_s": 56.22811412811279,
+    "total_s": 387.9758825302124
+  },
+  "deviations": [
+    "No per-draw retraining (as specified): models fit once on all train rows and predict_proba is called in batch over every held-out row, per the prereg's stated deviation from predict_now.py's live per-draw retraining."
+  ]
+}

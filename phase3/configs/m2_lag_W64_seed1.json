@@ -1,0 +1,14 @@
+{
+  "run_id": "m2_lag_W64_seed1",
+  "model": "m2",
+  "W": 64,
+  "seed": 1,
+  "batch": 128,
+  "lr": 3e-4,
+  "max_epochs": 50,
+  "patience": 5,
+  "weight_decay": 0.01,
+  "K": 2,
+  "lambda": 1.0,
+  "comment": "K=2, lambda=1.0 are placeholders (plans/PHASE3_PLAN.md section 4) -- Phase 2 backtest has not yet run to set the real values from the lag table"
+}

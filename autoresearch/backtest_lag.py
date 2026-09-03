@@ -81,6 +81,58 @@ def log(msg):
 
 
 # ---------------------------------------------------------------------------
+# Production-parity correction for the leaked momentum feature.
+#
+# prepare_v3._feat_momentum (lines ~390-398) computes, for target row idx:
+#     prev_digits = {df.d1[idx-1], df.d2[idx-1], df.d3[idx-1]}
+#     curr_digits = {df.d1[idx],   df.d2[idx],   df.d3[idx]}
+#     overlap = len(prev_digits & curr_digits)
+# reading the target row's own actual digits -- not available at prediction
+# time. predict_now.py (lines 228-233) never lets those real digits reach
+# build_features: the row being predicted is fed in as a placeholder with
+# d1=d2=d3=0. So in production curr_digits is always {0}, and
+# overlap = 1.0 if 0 in prev_digits else 0.0.
+#
+# This reproduces that placeholder arithmetic for target rows only (test_idx /
+# live_idx). Training rows are untouched -- in production those are real,
+# already-observed historical draws, not placeholders, so prepare_v3's
+# computation for them is not a leak. Verified against predict_now's actual
+# placeholder construction on 5 sample rows (3 test-window, 2 live-window):
+# corrected column == ground truth exactly, and no other column changes.
+# ---------------------------------------------------------------------------
+
+from prepare_v3 import FEATURE_DIMS as _FEATURE_DIMS
+
+
+def _overlap_col_index(feature_sets):
+    assert "momentum" in feature_sets
+    offset = 0
+    for fs in feature_sets:
+        if fs == "momentum":
+            break
+        offset += _FEATURE_DIMS[fs]
+    return offset + _FEATURE_DIMS["momentum"] - 1
+
+
+def apply_production_overlap_correction(df, indices, X_raw, feature_sets):
+    """Overwrite the momentum block's last column for target rows to match
+    predict_now.py's production placeholder behavior. See module comment above."""
+    col = _overlap_col_index(feature_sets)
+    X_corr = X_raw.copy()
+    d1 = df["d1"].values
+    d2 = df["d2"].values
+    d3 = df["d3"].values
+    for row_i, idx in enumerate(indices):
+        if idx > 0:
+            prev_digits = {int(d1[idx - 1]), int(d2[idx - 1]), int(d3[idx - 1])}
+            overlap = 1.0 if 0 in prev_digits else 0.0
+        else:
+            overlap = 0.0
+        X_corr[row_i, col] = overlap
+    return X_corr
+
+
+# ---------------------------------------------------------------------------
 # Batched ensemble -- same model construction as predict_now._run_ensemble,
 # fit once, predict_proba over many rows.
 # ---------------------------------------------------------------------------
@@ -93,7 +145,7 @@ def _build_clf(m):
             min_samples_leaf=m.get("min_samples_leaf", 1),
             min_samples_split=m.get("min_samples_split", 2),
             max_features=m.get("max_features", "sqrt"),
-            random_state=42, n_jobs=-1)
+            random_state=42, n_jobs=8)
     elif mtype == "xgb":
         clf = xgb.XGBClassifier(
             objective="multi:softprob", num_class=10,
@@ -101,7 +153,7 @@ def _build_clf(m):
             learning_rate=m["learning_rate"], subsample=m["subsample"],
             colsample_bytree=m["colsample_bytree"],
             reg_alpha=m["reg_alpha"], reg_lambda=m["reg_lambda"],
-            eval_metric="mlogloss", random_state=42, verbosity=0)
+            eval_metric="mlogloss", random_state=42, verbosity=0, n_jobs=8)
     elif mtype == "lgb":
         clf = lgb.LGBMClassifier(
             objective="multiclass", num_class=10,
@@ -109,7 +161,7 @@ def _build_clf(m):
             learning_rate=m["learning_rate"], subsample=m["subsample"],
             colsample_bytree=m["colsample_bytree"],
             reg_alpha=m["reg_alpha"], reg_lambda=m["reg_lambda"],
-            random_state=42, n_jobs=-1, verbose=-1)
+            random_state=42, n_jobs=8, verbose=-1)
     else:
         raise ValueError(f"unknown model type {mtype}")
     if m.get("calibrate"):
@@ -245,7 +297,7 @@ def load_live_all():
 # Window 1: held-out test split
 # ---------------------------------------------------------------------------
 
-def run_window_test():
+def run_window_test(causal=False):
     log("=== WINDOW 1: test split (train+val -> test) ===")
     hist_df = load_data()
     train_end = _VAL_END  # 13,236
@@ -261,6 +313,11 @@ def run_window_test():
     X_train_raw = build_features(hist_df, train_idx, FEAT_A)
     X_test_raw = build_features(hist_df, test_idx, FEAT_A)
     log(f"feature build: {time.time()-t0:.1f}s  train={X_train_raw.shape} test={X_test_raw.shape}")
+
+    if causal:
+        X_test_raw = apply_production_overlap_correction(hist_df, test_idx, X_test_raw, FEAT_A)
+        log("causal mode: corrected momentum-overlap column on test target rows "
+            "(train rows untouched)")
 
     X_train_a = pn._apply_custom_interact(X_train_raw, INTERACT_HEAD, INTERACT_TAIL, include_ratios=True)
     X_test_a = pn._apply_custom_interact(X_test_raw, INTERACT_HEAD, INTERACT_TAIL, include_ratios=True)
@@ -291,7 +348,8 @@ def run_window_test():
     actual = [f"{hist_df['d1'].values[i]}{hist_df['d2'].values[i]}{hist_df['d3'].values[i]}" for i in test_idx]
 
     records = build_window_records(dates, slots, actual, pm_a, pm_b)
-    out_path = os.path.join(_DIR, "backtest_predictions_test.jsonl")
+    fname = "backtest_predictions_test_causal.jsonl" if causal else "backtest_predictions_test.jsonl"
+    out_path = os.path.join(_DIR, fname)
     with open(out_path, "w") as f:
         for r in records:
             f.write(json.dumps(r) + "\n")
@@ -303,7 +361,7 @@ def run_window_test():
 # Window 2: live window
 # ---------------------------------------------------------------------------
 
-def run_window_live():
+def run_window_live(causal=False):
     log("=== WINDOW 2: live window (full history -> live) ===")
     hist_df = load_data()
     n_hist = len(hist_df)
@@ -320,6 +378,11 @@ def run_window_live():
     X_train_raw = build_features(combined_df, train_idx, FEAT_A)
     X_live_raw = build_features(combined_df, live_idx, FEAT_A)
     log(f"feature build: {time.time()-t0:.1f}s  train={X_train_raw.shape} live={X_live_raw.shape}")
+
+    if causal:
+        X_live_raw = apply_production_overlap_correction(combined_df, live_idx, X_live_raw, FEAT_A)
+        log("causal mode: corrected momentum-overlap column on live target rows "
+            "(train rows untouched)")
 
     X_train_a = pn._apply_custom_interact(X_train_raw, INTERACT_HEAD, INTERACT_TAIL, include_ratios=True)
     X_live_a = pn._apply_custom_interact(X_live_raw, INTERACT_HEAD, INTERACT_TAIL, include_ratios=True)
@@ -350,7 +413,8 @@ def run_window_live():
     actual = [f"{combined_df['d1'].values[i]}{combined_df['d2'].values[i]}{combined_df['d3'].values[i]}" for i in live_idx]
 
     records = build_window_records(dates, slots, actual, pm_a, pm_b)
-    out_path = os.path.join(_DIR, "backtest_predictions_live.jsonl")
+    fname = "backtest_predictions_live_causal.jsonl" if causal else "backtest_predictions_live.jsonl"
+    out_path = os.path.join(_DIR, fname)
     with open(out_path, "w") as f:
         for r in records:
             f.write(json.dumps(r) + "\n")
@@ -519,5 +583,26 @@ def main():
         f"train_time_a_live={tt_a_live:.1f}s train_time_b_live={tt_b_live:.1f}s")
 
 
+def main_causal():
+    """Same Design B backtest, momentum-overlap leak neutralized (matches
+    predict_now.py's placeholder behavior for target rows). Writes distinct
+    output files -- does not touch the earlier contaminated outputs."""
+    t_start = time.time()
+    results_dir = os.path.join(_DIR, "results")
+
+    records_test, tt_a_test, tt_b_test = run_window_test(causal=True)
+    run_lag_analysis(records_test, os.path.join(results_dir, "backtest_lag_output_test_causal.json"), "test_causal")
+
+    records_live, tt_a_live, tt_b_live = run_window_live(causal=True)
+    run_lag_analysis(records_live, os.path.join(results_dir, "backtest_lag_output_live_causal.json"), "live_causal")
+
+    log(f"ALL DONE (causal). total wall time: {time.time()-t_start:.1f}s")
+    log(f"train_time_a_test={tt_a_test:.1f}s train_time_b_test={tt_b_test:.1f}s "
+        f"train_time_a_live={tt_a_live:.1f}s train_time_b_live={tt_b_live:.1f}s")
+
+
 if __name__ == "__main__":
-    main()
+    if "--causal" in sys.argv:
+        main_causal()
+    else:
+        main()

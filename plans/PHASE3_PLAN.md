@@ -60,6 +60,29 @@ Lambda is fixed. A learnable lambda drifts toward whatever inflates the multi-la
 
 Stage C, online (D3, decided 2026-08-26: option O5, replica only). The offline Stage B model is frozen and serves as control. A separate replica copy takes one AdamW step per scored live draw on a replay batch of the newest 64 live draws plus 64 sampled from history. Learning rate 1e-4 (chosen). Live draws never enter the offline training set and replica weights are never promoted or reused offline. Report frozen vs replica on the same live draws, all four slots. This is the one sanctioned exception to the live-data boundary, and it is confined to the replica.
 
+Stage D, pretrained foundation model, zero-shot (added 2026-09-01). Model:
+Google TimesFM-3 (330M parameters, Hugging Face weights, non-commercial
+license, acceptable for research use). Rationale: TimesFM-3 removes about a
+third of seasonal-naive error on real-world series (GIFT-Eval 0.640 vs 1.0),
+so it demonstrably extracts temporal structure when structure exists. Running
+it zero-shot on the draw sequence tests transfer from real-world structure,
+which the from-scratch Stage A models cannot. Expected result: its edge over
+naive collapses to zero on CSPRNG output.
+
+Encoding (D6, decided 2026-09-01): three separate univariate series, one per
+ball position (d0, d1, d2), each a sequence of digits 0-9 in draw order, all
+four slots interleaved chronologically. No fine-tuning, no covariates.
+Forecast the next value per series over the test and live windows with the
+same walk-forward windows the other stages use; map the model's quantile
+output to a per-digit distribution by binning its continuous forecast to the
+nearest integer 0-9 (clipped), renormalized. Metrics identical to section 6
+(per-position log-loss vs ln(10), top-1 vs 0.10, top-20 combo hit from the
+product distribution vs 0.020, permutation null). Comparison row: seasonal
+naive with period 4 (same slot yesterday) scored the same way.
+
+Runs after M3 completes (GPU headroom). If the 330M model does not fit the
+1070 alongside whatever else is resident, run on CPU and record it.
+
 ## 5. Matched null and gaming pre-mortem
 
 Every metric is reported as observed minus null, where null is the same metric on draw sequences with actual outcomes permuted (2000 permutations, seed 42), the same procedure as autoresearch/lag_analysis.py.
@@ -116,3 +139,4 @@ D2. Decided: all available columns as tokens (section 2). Pre-draw publication o
 D3. Decided: O5, online replica only, frozen control, all four slots (section 4).
 D4. Deferred until Stage A results are in.
 D5. Done 2026-08-26 (commits b848f3c, 53e5e20).
+D6. Decided 2026-09-01: Stage D encodes the draws as three separate per-position digit series (section 4).

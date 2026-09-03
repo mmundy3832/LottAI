@@ -28,6 +28,14 @@ checkpoint_latest.pt (overwritten), plus a permanent checkpoint_step<N>.pt
 every CKPT_KEEP_EVERY steps.
 
 Usage: python3 train_grok.py configs/m3_wd1.0.json [max_steps_override]
+
+Resume: python3 train_grok.py configs/m3_wd1.0.json --resume runs/m3_wd1.0/checkpoint_latest.pt --max-steps 10000000
+  Loads model (+ optimizer, if the checkpoint has optimizer_state) and
+  continues step numbering from checkpoint["step"]. Appends to the existing
+  metrics.jsonl (never truncates) and keeps the same CKPT_EVERY /
+  CKPT_KEEP_EVERY cadence, aligned to absolute step number. If the
+  checkpoint has no optimizer_state, a fresh AdamW is built at config lr
+  and a warning is printed to stdout and returned in the run summary.
 """
 
 import os
@@ -92,7 +100,7 @@ def save_checkpoint(model, optimizer, config, step, path):
     os.replace(tmp_path, path)  # atomic swap: no truncated checkpoint on crash mid-write
 
 
-def train_grok_run(config, run_id, max_steps_override=None):
+def train_grok_run(config, run_id, max_steps_override=None, resume_path=None):
     set_seed(config["seed"])
 
     vocab = load_vocab()
@@ -107,9 +115,32 @@ def train_grok_run(config, run_id, max_steps_override=None):
     ).to(DEVICE)
     n_params = count_params(model)
 
-    optimizer = torch.optim.AdamW(
-        model.parameters(), lr=config["lr"], weight_decay=config["weight_decay"],
-    )
+    start_step = 0
+    optimizer_resumed = False
+    if resume_path is not None:
+        ckpt = torch.load(resume_path, map_location=DEVICE)
+        model.load_state_dict(ckpt["model_state"])
+        start_step = ckpt["step"]
+        if ckpt.get("optimizer_state") is not None:
+            optimizer = torch.optim.AdamW(
+                model.parameters(), lr=config["lr"], weight_decay=config["weight_decay"],
+            )
+            optimizer.load_state_dict(ckpt["optimizer_state"])
+            optimizer_resumed = True
+        else:
+            optimizer = torch.optim.AdamW(
+                model.parameters(), lr=config["lr"], weight_decay=config["weight_decay"],
+            )
+            print(f"[{run_id}] RESUME WARNING: checkpoint {resume_path} has no "
+                  f"optimizer_state -- resuming model weights only with a FRESH "
+                  f"AdamW at config lr={config['lr']} (optimizer moments not "
+                  f"preserved).", flush=True)
+        print(f"[{run_id}] resumed from {resume_path} at step {start_step} "
+              f"(optimizer_resumed={optimizer_resumed})", flush=True)
+    else:
+        optimizer = torch.optim.AdamW(
+            model.parameters(), lr=config["lr"], weight_decay=config["weight_decay"],
+        )
 
     run_dir = os.path.join(RUNS_DIR, run_id)
     os.makedirs(run_dir, exist_ok=True)
@@ -120,14 +151,15 @@ def train_grok_run(config, run_id, max_steps_override=None):
     print(f"[{run_id}] model={config['model']} n_layers={config.get('n_layers')} "
           f"wd={config['weight_decay']} params={n_params:,} "
           f"train={train_t['context'].shape[0]} val={val_t['context'].shape[0]} "
-          f"max_steps={max_steps}", flush=True)
+          f"start_step={start_step} max_steps={max_steps}", flush=True)
 
     batches = step_batches(train_t, config["batch"], config["seed"])
     t_start = time.time()
 
-    with open(metrics_path, "w") as mf:
+    metrics_mode = "a" if resume_path is not None else "w"
+    with open(metrics_path, metrics_mode) as mf:
         model.train()
-        for step in range(1, max_steps + 1):
+        for step in range(start_step + 1, max_steps + 1):
             batch = next(batches)
             optimizer.zero_grad()
             _, loss, _ = compute_logits_loss(model, batch)
@@ -171,5 +203,25 @@ if __name__ == "__main__":
     with open(config_path) as f:
         config = json.load(f)
     run_id = config.get("run_id") or os.path.splitext(os.path.basename(config_path))[0]
-    max_steps_override = int(sys.argv[2]) if len(sys.argv) > 2 else None
-    train_grok_run(config, run_id, max_steps_override=max_steps_override)
+
+    # Flag parsing: --resume <path> and --max-steps <int> in any order, plus
+    # the legacy bare positional max_steps override (python3 train_grok.py
+    # config.json 500) preserved for existing callers (run_m3_sequential.sh).
+    resume_path = None
+    max_steps_override = None
+    rest = sys.argv[2:]
+    i = 0
+    while i < len(rest):
+        arg = rest[i]
+        if arg == "--resume":
+            resume_path = rest[i + 1]
+            i += 2
+        elif arg == "--max-steps":
+            max_steps_override = int(rest[i + 1])
+            i += 2
+        else:
+            max_steps_override = int(arg)  # legacy positional form
+            i += 1
+
+    train_grok_run(config, run_id, max_steps_override=max_steps_override,
+                    resume_path=resume_path)
