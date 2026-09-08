@@ -18,3 +18,7 @@ python-dotenv>=1.0
 # Install with: pip install torch==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121
 torch==2.5.1+cu121
 pytest>=9.0
+
+# Phase 3 Stage D: TimesFM-3 zero-shot forecasting (CPU inference; see
+# phase3/stage_d_timesfm.py docstring). Install with: pip install timesfm[torch]==3.0.1
+timesfm[torch]==3.0.1
