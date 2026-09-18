@@ -66,6 +66,10 @@ prediction ledgers in `autoresearch/` do record the actual winning digits for th
 draws they scored, because that is the evidence for the live results. Those digits
 are public Texas Lottery records.
 
+## License
+
+MIT. See [LICENSE](LICENSE).
+
 ## Status
 
 Research project, one author, run on personal hardware. Pull requests welcome,
