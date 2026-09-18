@@ -14,6 +14,10 @@ xgboost>=2.0
 # Environment / config
 python-dotenv>=1.0
 
+# HTTP clients (runner_v4.py talks to Ollama; analysis.py uses httpx)
+requests>=2.31
+httpx>=0.27
+
 # Phase 3: Software 2.0 predictor (GPU, CUDA 12.1 wheels)
 # Install with: pip install torch==2.5.1+cu121 --index-url https://download.pytorch.org/whl/cu121
 torch==2.5.1+cu121
