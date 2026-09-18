@@ -26,6 +26,9 @@ with high-school math, then goes into detail.
 
 ## Layout
 
+- `phase1/` Phase 1. The Lotto Texas randomness scripts, the draw and Austin weather
+  data, and their outputs under `phase1/results/`. Written on a different machine;
+  four scripts still carry that machine's absolute paths.
 - `autoresearch/` Phase 2. The experiment runner, genetic operators, feature
   pipelines, live prediction loop, and results ledgers. `program_v3.md` is the
   instruction file the LLM experimenter read.
@@ -41,8 +44,6 @@ with high-school math, then goes into detail.
 - `BRIEFING.md` Internal onboarding notes written for the AI harness. Denser and
   older than the papers; read the papers first.
 
-Phase 1 analysis code is not in this repository yet. It was written on a different
-machine and will be added when it is brought over.
 
 ## Running it
 
