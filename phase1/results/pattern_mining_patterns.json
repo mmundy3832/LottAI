@@ -1,0 +1,11 @@
+{
+  "total_mined": 351,
+  "total_tested": 351,
+  "total_significant": 0,
+  "top_patterns": [],
+  "by_mode": {
+    "raw": 0,
+    "decade": 0,
+    "feature": 0
+  }
+}

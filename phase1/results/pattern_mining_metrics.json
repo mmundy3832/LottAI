@@ -1,0 +1,11 @@
+{
+  "baseline_lift_mean": 1.5152401035322325,
+  "baseline_lift_std": 0.062318543158686596,
+  "baseline_lift_max": 1.6098228663446055,
+  "baseline_lift_p95": 1.59743961352657,
+  "real_lift_mean": 1.0398068194533412,
+  "real_lift_max": 1.8729449969555512,
+  "real_lift_p95": 1.2593414400593075,
+  "patterns_above_shuffled_p95": 1,
+  "shuffled_p95_threshold": 1.59743961352657
+}

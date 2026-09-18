@@ -1,0 +1,294 @@
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: WEATHER-LOTTERY CORRELATION ANALYSIS
+[2026-02-13 23:31:07] INFO: Started at 2026-02-13 23:31:07
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: PHASE 0: Data Loading & Joining
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: Loaded lottery CSV: 3704 rows
+[2026-02-13 23:31:07] INFO: Lottery date range: 1992-11-14 00:00:00 to 2026-02-11 00:00:00
+[2026-02-13 23:31:07] INFO: Loaded weather CSV: 6636 rows
+[2026-02-13 23:31:07] INFO: Weather date range: 2006-04-01 00:00:00 to 2024-05-31 00:00:00
+[2026-02-13 23:31:07] INFO: Joined dataset: 2041 draws with matching weather data
+[2026-02-13 23:31:07] INFO: 
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: PHASE 1: Derived Lottery Features
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: Created aggregate features: draw_sum, draw_mean, draw_std, draw_range, odd_count, high_count, odd_ratio, high_ratio, consecutive_pairs
+[2026-02-13 23:31:07] INFO: Created 54 binary indicator columns (number_present_1..54)
+[2026-02-13 23:31:07] INFO: draw_sum range: 47 to 279, mean=162.9
+[2026-02-13 23:31:07] INFO: 
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: PHASE 2: Weather Feature Preparation
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: Weather features (12): ['temp', 'apparent_temp', 'pressure', 'humidity', 'wind_speed', 'precipitation', 'temp_range', 'pressure_range', 'humidity_range', 'is_rainy', 'is_high_pressure', 'pressure_delta_1d']
+[2026-02-13 23:31:07] INFO:   temp: mean=69.37, std=14.17, range=[23.30, 94.90]
+[2026-02-13 23:31:07] INFO:   apparent_temp: mean=69.30, std=18.47, range=[11.00, 98.80]
+[2026-02-13 23:31:07] INFO:   pressure: mean=1016.19, std=5.76, range=[1000.50, 1044.90]
+[2026-02-13 23:31:07] INFO:   humidity: mean=66.28, std=14.78, range=[18.00, 98.00]
+[2026-02-13 23:31:07] INFO:   wind_speed: mean=8.13, std=3.06, range=[2.40, 24.20]
+[2026-02-13 23:31:07] INFO:   precipitation: mean=2.93, std=8.41, range=[0.00, 111.60]
+[2026-02-13 23:31:07] INFO:   temp_range: mean=18.66, std=5.82, range=[1.90, 42.30]
+[2026-02-13 23:31:07] INFO:   pressure_range: mean=5.86, std=2.58, range=[1.90, 22.10]
+[2026-02-13 23:31:07] INFO:   humidity_range: mean=42.98, std=12.96, range=[4.00, 86.00]
+[2026-02-13 23:31:07] INFO:   is_rainy: mean=0.34, std=0.47, range=[0.00, 1.00]
+[2026-02-13 23:31:07] INFO:   is_high_pressure: mean=0.50, std=0.50, range=[0.00, 1.00]
+[2026-02-13 23:31:07] INFO:   pressure_delta_1d: mean=0.00, std=6.85, range=[-27.50, 28.10]
+[2026-02-13 23:31:07] INFO: 
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: PHASE 3: Seasonal Detrending
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: Detrended 10 continuous weather features using day-of-year smoothed means
+[2026-02-13 23:31:07] INFO:   No significant trend in draw_sum: p=0.1600
+[2026-02-13 23:31:07] INFO:   No significant trend in draw_mean: p=0.1600
+[2026-02-13 23:31:07] INFO:   Significant linear trend in draw_std: slope=0.000331, p=0.0120 -> detrending
+[2026-02-13 23:31:07] INFO:   Significant linear trend in draw_range: slope=0.000737, p=0.0188 -> detrending
+[2026-02-13 23:31:07] INFO:   No significant trend in odd_ratio: p=0.4664
+[2026-02-13 23:31:07] INFO:   No significant trend in high_ratio: p=0.6638
+[2026-02-13 23:31:07] INFO:   No significant trend in consecutive_pairs: p=0.4766
+[2026-02-13 23:31:07] INFO: post_aug2021 control variable: 440 draws after cutoff, 1601 before
+[2026-02-13 23:31:07] INFO: 
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: PHASE 4: Correlation Analysis
+[2026-02-13 23:31:07] INFO: ======================================================================
+[2026-02-13 23:31:07] INFO: Computing Pearson correlations (weather vs aggregate lottery)...
+[2026-02-13 23:31:07] INFO: Computing point-biserial correlations (weather vs 54 number indicators)...
+[2026-02-13 23:31:07] INFO: Computing Spearman rank correlations (weather vs aggregate lottery)...
+[2026-02-13 23:31:08] INFO: Total correlation tests: 864 (Pearson=108, Point-biserial=648, Spearman=108)
+[2026-02-13 23:31:08] INFO: Raw significant (p<0.05): 49/864
+[2026-02-13 23:31:08] INFO: FDR-surviving (q<0.05): 0/864
+[2026-02-13 23:31:08] INFO: Bonferroni-surviving: 0/864
+[2026-02-13 23:31:08] INFO: Expected by chance at alpha=0.05: ~43
+[2026-02-13 23:31:08] INFO: Top 10 Pearson correlations (by |r|):
+[2026-02-13 23:31:08] INFO:   humidity                  vs draw_sum            : r=-0.0496, p=2.5026e-02
+[2026-02-13 23:31:08] INFO:   humidity                  vs draw_mean           : r=-0.0496, p=2.5026e-02
+[2026-02-13 23:31:08] INFO:   pressure_range            vs draw_range          : r=-0.0476, p=3.1452e-02
+[2026-02-13 23:31:08] INFO:   pressure_range            vs draw_std            : r=-0.0454, p=4.0189e-02
+[2026-02-13 23:31:08] INFO:   temp_range                vs draw_range          : r=-0.0383, p=8.3894e-02
+[2026-02-13 23:31:08] INFO:   temp_range                vs draw_std            : r=-0.0382, p=8.4416e-02
+[2026-02-13 23:31:08] INFO:   temp_range                vs consecutive_pairs   : r=+0.0329, p=1.3780e-01
+[2026-02-13 23:31:08] INFO:   humidity                  vs high_ratio          : r=-0.0327, p=1.3981e-01
+[2026-02-13 23:31:08] INFO:   humidity                  vs high_count          : r=-0.0327, p=1.3981e-01
+[2026-02-13 23:31:08] INFO:   pressure_range            vs consecutive_pairs   : r=+0.0322, p=1.4585e-01
+[2026-02-13 23:31:08] INFO: 
+[2026-02-13 23:31:08] INFO: ======================================================================
+[2026-02-13 23:31:08] INFO: PHASE 5: Mutual Information Analysis
+[2026-02-13 23:31:08] INFO: ======================================================================
+[2026-02-13 23:31:08] INFO: Computing MI for aggregate lottery features...
+[2026-02-13 23:31:09] INFO: MI aggregate matrix shape: (7, 12)
+[2026-02-13 23:31:09] INFO: Computing MI for individual number indicators (54 numbers)...
+[2026-02-13 23:31:13] INFO: MI numbers matrix shape: (54, 12)
+[2026-02-13 23:31:13] INFO: Running 200 permutation surrogates for MI p-values...
+[2026-02-13 23:33:59] INFO:   Aggregate MI permutation test done in 166.0s
+[2026-02-13 23:36:29] INFO:   MI permutation: completed number 10/54
+[2026-02-13 23:39:00] INFO:   MI permutation: completed number 20/54
+[2026-02-13 23:41:31] INFO:   MI permutation: completed number 30/54
+[2026-02-13 23:44:05] INFO:   MI permutation: completed number 40/54
+[2026-02-13 23:46:36] INFO:   MI permutation: completed number 50/54
+[2026-02-13 23:47:35] INFO:   Number MI permutation test done in 815.9s
+[2026-02-13 23:47:35] INFO: MI tests total: 732
+[2026-02-13 23:47:35] INFO: MI raw significant (p<0.05): 41
+[2026-02-13 23:47:35] INFO: MI FDR-surviving: 0
+[2026-02-13 23:47:35] INFO: Top 10 MI values (aggregate):
+[2026-02-13 23:47:35] INFO:   pressure                  vs high_ratio          : MI=0.0240, p=0.030
+[2026-02-13 23:47:35] INFO:   humidity_range            vs draw_sum            : MI=0.0223, p=0.065
+[2026-02-13 23:47:35] INFO:   humidity_range            vs draw_mean           : MI=0.0223, p=0.040
+[2026-02-13 23:47:35] INFO:   apparent_temp             vs draw_range          : MI=0.0204, p=0.045
+[2026-02-13 23:47:35] INFO:   wind_speed                vs odd_ratio           : MI=0.0200, p=0.030
+[2026-02-13 23:47:35] INFO:   is_high_pressure          vs draw_range          : MI=0.0180, p=0.025
+[2026-02-13 23:47:35] INFO:   pressure_range            vs draw_std            : MI=0.0178, p=0.104
+[2026-02-13 23:47:35] INFO:   pressure_range            vs draw_sum            : MI=0.0171, p=0.075
+[2026-02-13 23:47:35] INFO:   pressure_range            vs draw_mean           : MI=0.0171, p=0.070
+[2026-02-13 23:47:35] INFO:   wind_speed                vs draw_range          : MI=0.0168, p=0.080
+[2026-02-13 23:47:35] INFO: 
+[2026-02-13 23:47:35] INFO: ======================================================================
+[2026-02-13 23:47:35] INFO: PHASE 6: Logistic Regression Per Number
+[2026-02-13 23:47:35] INFO: ======================================================================
+[2026-02-13 23:47:35] INFO: Fitting logistic regression for each of 54 numbers...
+[2026-02-13 23:47:36] INFO:   Completed 10/54 logistic regressions
+[2026-02-13 23:47:37] INFO:   Completed 20/54 logistic regressions
+[2026-02-13 23:47:37] INFO:   Completed 30/54 logistic regressions
+[2026-02-13 23:47:38] INFO:   Completed 40/54 logistic regressions
+[2026-02-13 23:47:38] INFO:   Completed 50/54 logistic regressions
+[2026-02-13 23:47:39] INFO: Omnibus LR tests: 54
+[2026-02-13 23:47:39] INFO: Raw significant (p<0.05): 2
+[2026-02-13 23:47:39] INFO: FDR-surviving: 0
+[2026-02-13 23:47:39] INFO: Expected by chance: ~2.7
+[2026-02-13 23:47:39] INFO: Fitting L1-regularized logistic regression for variable selection...
+[2026-02-13 23:47:41] INFO: L1 feature selection frequency (across 54 number models):
+[2026-02-13 23:47:41] INFO:   wind_speed: selected in 54 models
+[2026-02-13 23:47:41] INFO:   temp_range: selected in 52 models
+[2026-02-13 23:47:41] INFO:   pressure_range: selected in 52 models
+[2026-02-13 23:47:41] INFO:   sin_doy: selected in 52 models
+[2026-02-13 23:47:41] INFO:   precipitation: selected in 51 models
+[2026-02-13 23:47:41] INFO:   humidity_range: selected in 51 models
+[2026-02-13 23:47:41] INFO:   is_high_pressure: selected in 51 models
+[2026-02-13 23:47:41] INFO:   humidity: selected in 50 models
+[2026-02-13 23:47:41] INFO:   is_rainy: selected in 50 models
+[2026-02-13 23:47:41] INFO:   pressure_delta_1d: selected in 48 models
+[2026-02-13 23:47:41] INFO: Numbers with significant omnibus LR test (raw p<0.05):
+[2026-02-13 23:47:41] INFO:   Number 4: p=2.1605e-03
+[2026-02-13 23:47:41] INFO:   Number 24: p=3.1190e-02
+[2026-02-13 23:47:41] INFO: 
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: PHASE 7: OLS Regression on Aggregates
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: 
+  OLS: draw_sum
+[2026-02-13 23:47:41] INFO:     R-squared: 0.006756
+[2026-02-13 23:47:41] INFO:     Adj R-squared: -0.000601
+[2026-02-13 23:47:41] INFO:     F-statistic: 0.8277, p=6.4717e-01
+[2026-02-13 23:47:41] INFO:     Significant predictors (HAC p<0.05):
+[2026-02-13 23:47:41] INFO:       const: coef=163.1878, t=178.55, p=0.0000e+00
+[2026-02-13 23:47:41] INFO:       sin_doy: coef=-2.3319, t=-2.06, p=3.9226e-02
+[2026-02-13 23:47:41] INFO: 
+  OLS: draw_range
+[2026-02-13 23:47:41] INFO:     R-squared: 0.008600
+[2026-02-13 23:47:41] INFO:     Adj R-squared: 0.001257
+[2026-02-13 23:47:41] INFO:     F-statistic: 1.1391, p=3.1469e-01
+[2026-02-13 23:47:41] INFO:     Significant predictors (HAC p<0.05):
+[2026-02-13 23:47:41] INFO:       const: coef=38.9720, t=175.07, p=0.0000e+00
+[2026-02-13 23:47:41] INFO: 
+  OLS: odd_ratio
+[2026-02-13 23:47:41] INFO:     R-squared: 0.006910
+[2026-02-13 23:47:41] INFO:     Adj R-squared: -0.000446
+[2026-02-13 23:47:41] INFO:     F-statistic: 1.0212, p=4.2937e-01
+[2026-02-13 23:47:41] INFO:     Significant predictors (HAC p<0.05):
+[2026-02-13 23:47:41] INFO:       const: coef=0.4975, t=106.01, p=0.0000e+00
+[2026-02-13 23:47:41] INFO: 
+  OLS: high_ratio
+[2026-02-13 23:47:41] INFO:     R-squared: 0.003853
+[2026-02-13 23:47:41] INFO:     Adj R-squared: -0.003526
+[2026-02-13 23:47:41] INFO:     F-statistic: 0.4785, p=9.5222e-01
+[2026-02-13 23:47:41] INFO:     Significant predictors (HAC p<0.05):
+[2026-02-13 23:47:41] INFO:       const: coef=0.4872, t=101.30, p=0.0000e+00
+[2026-02-13 23:47:41] INFO: 
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: PHASE 8: Granger Causality & Cross-Correlation
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: Granger causality tests: 48
+[2026-02-13 23:47:41] INFO: Raw significant (p<0.05): 2
+[2026-02-13 23:47:41] INFO: FDR-surviving: 0
+[2026-02-13 23:47:41] INFO: Expected by chance: ~2.4
+[2026-02-13 23:47:41] INFO: Top 10 Granger causality results:
+[2026-02-13 23:47:41] INFO:   precipitation             -> draw_sum       : p=3.1802e-02, best_lag=2
+[2026-02-13 23:47:41] INFO:   pressure_range            -> odd_ratio      : p=3.4766e-02, best_lag=3
+[2026-02-13 23:47:41] INFO:   precipitation             -> high_ratio     : p=5.3098e-02, best_lag=2
+[2026-02-13 23:47:41] INFO:   pressure_delta_1d         -> high_ratio     : p=6.0958e-02, best_lag=3
+[2026-02-13 23:47:41] INFO:   humidity_range            -> high_ratio     : p=6.9139e-02, best_lag=3
+[2026-02-13 23:47:41] INFO:   humidity_range            -> draw_range     : p=8.0524e-02, best_lag=3
+[2026-02-13 23:47:41] INFO:   is_rainy                  -> draw_range     : p=9.1261e-02, best_lag=3
+[2026-02-13 23:47:41] INFO:   precipitation             -> draw_range     : p=1.1226e-01, best_lag=3
+[2026-02-13 23:47:41] INFO:   is_high_pressure          -> odd_ratio      : p=1.2611e-01, best_lag=1
+[2026-02-13 23:47:41] INFO:   wind_speed                -> draw_range     : p=1.4565e-01, best_lag=1
+[2026-02-13 23:47:41] INFO: 
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: PHASE 9: Random Forest Predictability
+[2026-02-13 23:47:41] INFO: ======================================================================
+[2026-02-13 23:47:41] INFO: RF Regression: draw_sum
+[2026-02-13 23:47:46] INFO:   5-fold CV R-squared: -0.0218 +/- 0.0054
+[2026-02-13 23:47:47] INFO:   Feature importances (top 5):
+[2026-02-13 23:47:47] INFO:     pressure: 0.1042
+[2026-02-13 23:47:47] INFO:     wind_speed: 0.0956
+[2026-02-13 23:47:47] INFO:     pressure_range: 0.0900
+[2026-02-13 23:47:47] INFO:     humidity: 0.0871
+[2026-02-13 23:47:47] INFO:     sin_doy: 0.0855
+[2026-02-13 23:47:47] INFO: RF Classification: per-number AUC
+[2026-02-13 23:48:45] INFO:   AUC distribution across 54 numbers:
+[2026-02-13 23:48:45] INFO:     Mean: 0.5043
+[2026-02-13 23:48:45] INFO:     Std:  0.0241
+[2026-02-13 23:48:45] INFO:     Min:  0.4561
+[2026-02-13 23:48:45] INFO:     Max:  0.5581
+[2026-02-13 23:48:45] INFO:     Null expected: ~0.5000
+[2026-02-13 23:48:45] INFO:     Numbers with AUC > 0.55: 2
+[2026-02-13 23:48:45] INFO:     Numbers with AUC > 0.53: 9
+[2026-02-13 23:48:45] INFO: 
+[2026-02-13 23:48:45] INFO: ======================================================================
+[2026-02-13 23:48:45] INFO: PHASE 10: Effect Size Analysis
+[2026-02-13 23:48:45] INFO: ======================================================================
+[2026-02-13 23:48:45] INFO: Cohen's d effect sizes (binary weather splits):
+[2026-02-13 23:48:45] INFO: 
+  hot_vs_cold (n_high=1020, n_low=1021):
+[2026-02-13 23:48:45] INFO:     draw_sum       : d=+0.0335 (negligible), diff=+1.21
+[2026-02-13 23:48:45] INFO:     draw_mean      : d=+0.0335 (negligible), diff=+0.20
+[2026-02-13 23:48:45] INFO:     draw_std       : d=-0.0027 (negligible), diff=-0.01
+[2026-02-13 23:48:45] INFO:     draw_range     : d=+0.0150 (negligible), diff=+0.12
+[2026-02-13 23:48:45] INFO:     odd_ratio      : d=-0.0843 (negligible), diff=-0.02
+[2026-02-13 23:48:45] INFO:     high_ratio     : d=+0.0425 (negligible), diff=+0.01
+[2026-02-13 23:48:45] INFO: 
+  high_vs_low_pressure (n_high=1013, n_low=1028):
+[2026-02-13 23:48:45] INFO:     draw_sum       : d=-0.0228 (negligible), diff=-0.82
+[2026-02-13 23:48:45] INFO:     draw_mean      : d=-0.0228 (negligible), diff=-0.14
+[2026-02-13 23:48:45] INFO:     draw_std       : d=-0.0240 (negligible), diff=-0.08
+[2026-02-13 23:48:45] INFO:     draw_range     : d=-0.0219 (negligible), diff=-0.18
+[2026-02-13 23:48:45] INFO:     odd_ratio      : d=+0.0408 (negligible), diff=+0.01
+[2026-02-13 23:48:45] INFO:     high_ratio     : d=-0.0214 (negligible), diff=-0.00
+[2026-02-13 23:48:45] INFO: 
+  rainy_vs_dry (n_high=693, n_low=1348):
+[2026-02-13 23:48:45] INFO:     draw_sum       : d=-0.0245 (negligible), diff=-0.88
+[2026-02-13 23:48:45] INFO:     draw_mean      : d=-0.0245 (negligible), diff=-0.15
+[2026-02-13 23:48:45] INFO:     draw_std       : d=+0.0370 (negligible), diff=+0.13
+[2026-02-13 23:48:45] INFO:     draw_range     : d=+0.0538 (negligible), diff=+0.45
+[2026-02-13 23:48:45] INFO:     odd_ratio      : d=-0.0225 (negligible), diff=-0.00
+[2026-02-13 23:48:45] INFO:     high_ratio     : d=+0.0075 (negligible), diff=+0.00
+[2026-02-13 23:48:45] INFO: 
+  humid_vs_dry (n_high=1016, n_low=1025):
+[2026-02-13 23:48:45] INFO:     draw_sum       : d=-0.1410 (negligible), diff=-5.07
+[2026-02-13 23:48:45] INFO:     draw_mean      : d=-0.1410 (negligible), diff=-0.84
+[2026-02-13 23:48:45] INFO:     draw_std       : d=+0.0237 (negligible), diff=+0.08
+[2026-02-13 23:48:45] INFO:     draw_range     : d=+0.0628 (negligible), diff=+0.52
+[2026-02-13 23:48:45] INFO:     odd_ratio      : d=-0.0339 (negligible), diff=-0.01
+[2026-02-13 23:48:45] INFO:     high_ratio     : d=-0.0891 (negligible), diff=-0.02
+[2026-02-13 23:48:45] INFO: 
+  windy_vs_calm (n_high=1020, n_low=1021):
+[2026-02-13 23:48:45] INFO:     draw_sum       : d=-0.0406 (negligible), diff=-1.47
+[2026-02-13 23:48:45] INFO:     draw_mean      : d=-0.0406 (negligible), diff=-0.24
+[2026-02-13 23:48:45] INFO:     draw_std       : d=+0.0178 (negligible), diff=+0.06
+[2026-02-13 23:48:45] INFO:     draw_range     : d=+0.0073 (negligible), diff=+0.06
+[2026-02-13 23:48:45] INFO:     odd_ratio      : d=-0.0182 (negligible), diff=-0.00
+[2026-02-13 23:48:45] INFO:     high_ratio     : d=+0.0050 (negligible), diff=+0.00
+[2026-02-13 23:48:45] INFO: 
+Conditional frequency analysis for individual numbers:
+[2026-02-13 23:48:45] INFO: Top 10 numbers by frequency deviation (high vs low pressure):
+[2026-02-13 23:48:45] INFO:   Number 27: high_p=0.0967, low_p=0.1313, diff=-0.0346
+[2026-02-13 23:48:45] INFO:   Number 31: high_p=0.1422, low_p=0.1089, diff=+0.0332
+[2026-02-13 23:48:45] INFO:   Number 30: high_p=0.1165, low_p=0.0846, diff=+0.0319
+[2026-02-13 23:48:45] INFO:   Number 24: high_p=0.1313, low_p=0.1002, diff=+0.0311
+[2026-02-13 23:48:45] INFO:   Number 17: high_p=0.1037, low_p=0.1342, diff=-0.0306
+[2026-02-13 23:48:45] INFO:   Number 14: high_p=0.1027, low_p=0.1323, diff=-0.0296
+[2026-02-13 23:48:45] INFO:   Number 19: high_p=0.1362, low_p=0.1099, diff=+0.0263
+[2026-02-13 23:48:45] INFO:   Number 32: high_p=0.0898, low_p=0.1158, diff=-0.0259
+[2026-02-13 23:48:45] INFO:   Number 13: high_p=0.1194, low_p=0.0953, diff=+0.0241
+[2026-02-13 23:48:45] INFO:   Number 20: high_p=0.0967, low_p=0.1177, diff=-0.0210
+[2026-02-13 23:48:45] INFO: 
+'Extra correct balls per draw' calculation:
+[2026-02-13 23:48:45] INFO:   Base rate per number: 0.1111
+[2026-02-13 23:48:45] INFO:   Strongest single-number conditional deviation: 0.0225
+[2026-02-13 23:48:45] INFO:   Upper-bound extra correct balls per draw (all 6 picks): 0.1349
+[2026-02-13 23:48:45] INFO:   This is 2.25% improvement over random
+[2026-02-13 23:48:45] INFO: 
+[2026-02-13 23:48:45] INFO: ======================================================================
+[2026-02-13 23:48:45] INFO: PHASE 11: Generating Plots
+[2026-02-13 23:48:45] INFO: ======================================================================
+[2026-02-13 23:48:45] INFO: Generating weather_corr_heatmap.png...
+[2026-02-13 23:48:46] INFO: Generating weather_pointbiserial_heatmap.png...
+[2026-02-13 23:48:47] INFO: Generating weather_mi_heatmap.png...
+[2026-02-13 23:48:48] INFO: Generating weather_draw_sum_scatter.png...
+[2026-02-13 23:48:48] INFO: Generating weather_ml_auc_distribution.png...
+[2026-02-13 23:48:49] INFO: Generating weather_seasonal_detrending.png...
+[2026-02-13 23:48:49] INFO: All plots saved to results/ directory.
+[2026-02-13 23:48:49] INFO: 
+[2026-02-13 23:48:49] INFO: ======================================================================
+[2026-02-13 23:48:49] INFO: ANALYSIS COMPLETE
+[2026-02-13 23:48:49] INFO: Total time: 1062.3 seconds
+[2026-02-13 23:48:49] INFO: Results written to: D:\projects\LottAI\results\weather_correlation_findings.json
+[2026-02-13 23:48:49] INFO: Plots saved to: D:\projects\LottAI\results/
+[2026-02-13 23:48:49] INFO: ======================================================================
+[2026-02-13 23:48:49] INFO: 
+[2026-02-13 23:48:49] INFO: CONCLUSION:
+[2026-02-13 23:48:49] INFO: Correlation Analysis: 49 of 864 tests raw significant (p<0.05), expected ~43 by chance. FDR-surviving: 0, Bonferroni-surviving: 0.
+Mutual Information: 41 raw significant, 0 FDR-surviving.
+Logistic Regression (per number): 2 of 54 omnibus tests significant (expected ~2.7).
+Random Forest: draw_sum CV R2=-0.0218, per-number AUC mean=0.5043 (null=0.5000).
+Effect Size: Upper-bound extra correct balls per draw = 0.1349 (2.25% improvement).
+VERDICT: No meaningful weather-lottery correlation detected. Results are consistent with the lottery being independent of Austin weather conditions. Any raw significant results are consistent with multiple-testing false positives.

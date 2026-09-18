@@ -1,0 +1,67 @@
+{
+  "backtest_draws": 400,
+  "n_test_observations": 21600,
+  "n_test_spells": 2448,
+  "concordance": {
+    "cox_ph": 0.5080558676934891,
+    "rsf": 0.5195230989896844,
+    "naive_baseline": 0.5
+  },
+  "brier_scores": {
+    "1": 0.1147875816993464,
+    "3": 0.2088337305807493,
+    "5": 0.24484509480133537
+  },
+  "calibration": {
+    "0": {
+      "predicted_risk_mean": 0.9961267439286362,
+      "actual_rate": 0.11157407407407408,
+      "count": 2160
+    },
+    "1": {
+      "predicted_risk_mean": 1.3294181759991115,
+      "actual_rate": 0.1111111111111111,
+      "count": 2160
+    },
+    "2": {
+      "predicted_risk_mean": 1.4080374317973317,
+      "actual_rate": 0.10185185185185185,
+      "count": 2160
+    },
+    "3": {
+      "predicted_risk_mean": 1.4326211262431923,
+      "actual_rate": 0.10972222222222222,
+      "count": 2160
+    },
+    "4": {
+      "predicted_risk_mean": 1.4516114649925829,
+      "actual_rate": 0.11990740740740741,
+      "count": 2160
+    },
+    "5": {
+      "predicted_risk_mean": 1.4692361295847967,
+      "actual_rate": 0.11944444444444445,
+      "count": 2160
+    },
+    "6": {
+      "predicted_risk_mean": 1.486455866942105,
+      "actual_rate": 0.10740740740740741,
+      "count": 2160
+    },
+    "7": {
+      "predicted_risk_mean": 1.50585307073824,
+      "actual_rate": 0.11435185185185186,
+      "count": 2160
+    },
+    "8": {
+      "predicted_risk_mean": 1.5301898703644308,
+      "actual_rate": 0.09953703703703703,
+      "count": 2160
+    },
+    "9": {
+      "predicted_risk_mean": 1.5779469328395734,
+      "actual_rate": 0.1162037037037037,
+      "count": 2160
+    }
+  }
+}

@@ -1,0 +1,1033 @@
+{
+  "phase0": {
+    "n_matched_draws": 2041,
+    "date_range": [
+      "2006-04-01 00:00:00",
+      "2024-05-29 00:00:00"
+    ],
+    "elapsed_seconds": 0.08253169059753418
+  },
+  "phase1": {
+    "draw_sum_stats": {
+      "mean": 162.94463498285154,
+      "std": 36.042762889957494,
+      "min": 47,
+      "max": 279
+    },
+    "elapsed_seconds": 0.04382443428039551
+  },
+  "phase2": {
+    "weather_features": [
+      "temp",
+      "apparent_temp",
+      "pressure",
+      "humidity",
+      "wind_speed",
+      "precipitation",
+      "temp_range",
+      "pressure_range",
+      "humidity_range",
+      "is_rainy",
+      "is_high_pressure",
+      "pressure_delta_1d"
+    ],
+    "n_weather_features": 12,
+    "elapsed_seconds": 0.009427070617675781
+  },
+  "phase3": {
+    "trend_tests": {
+      "draw_sum": {
+        "slope": -0.0019027957069621643,
+        "p_value": 0.16000490511895754,
+        "r_squared": 0.0009679784139846544
+      },
+      "draw_mean": {
+        "slope": -0.00031713261782702714,
+        "p_value": 0.1600049051189578,
+        "r_squared": 0.0009679784139846526
+      },
+      "draw_std": {
+        "slope": 0.00033136301940726165,
+        "p_value": 0.012029207885176273,
+        "r_squared": 0.0030889444100991163
+      },
+      "draw_range": {
+        "slope": 0.000736723520313835,
+        "p_value": 0.01877660681202253,
+        "r_squared": 0.002705287618098157
+      },
+      "odd_ratio": {
+        "slope": 5.1495192591737985e-06,
+        "p_value": 0.4663643268128386,
+        "r_squared": 0.0002602443264791872
+      },
+      "high_ratio": {
+        "slope": -3.1347354459709454e-06,
+        "p_value": 0.6638382844126828,
+        "r_squared": 9.265919847142255e-05
+      },
+      "consecutive_pairs": {
+        "slope": -1.7644001715480794e-05,
+        "p_value": 0.47662389949751727,
+        "r_squared": 0.0002484744780925308
+      }
+    },
+    "n_post_aug2021": 440,
+    "elapsed_seconds": 0.02736973762512207
+  },
+  "phase4_correlation": {
+    "n_tests_total": 864,
+    "n_pearson": 108,
+    "n_point_biserial": 648,
+    "n_spearman": 108,
+    "raw_significant": 49,
+    "fdr_significant": 0,
+    "bonferroni_significant": 0,
+    "expected_by_chance": 43.2,
+    "top10_pearson": [
+      {
+        "weather": "humidity",
+        "lottery": "draw_sum",
+        "r": -0.04960428655611276,
+        "p": 0.02502602304552522
+      },
+      {
+        "weather": "humidity",
+        "lottery": "draw_mean",
+        "r": -0.04960428655611275,
+        "p": 0.02502602304552522
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "draw_range",
+        "r": -0.04762126043096954,
+        "p": 0.03145184923597855
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "draw_std",
+        "r": -0.045420904749325204,
+        "p": 0.04018895843604496
+      },
+      {
+        "weather": "temp_range",
+        "lottery": "draw_range",
+        "r": -0.038270307641018735,
+        "p": 0.08389359042878977
+      },
+      {
+        "weather": "temp_range",
+        "lottery": "draw_std",
+        "r": -0.03820598028243025,
+        "p": 0.08441570331590216
+      },
+      {
+        "weather": "temp_range",
+        "lottery": "consecutive_pairs",
+        "r": 0.03286018946941768,
+        "p": 0.1378009241163444
+      },
+      {
+        "weather": "humidity",
+        "lottery": "high_ratio",
+        "r": -0.03269335628510615,
+        "p": 0.13981197114230695
+      },
+      {
+        "weather": "humidity",
+        "lottery": "high_count",
+        "r": -0.03269335628510613,
+        "p": 0.13981197114230695
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "consecutive_pairs",
+        "r": 0.03220293112690345,
+        "p": 0.1458544174372481
+      }
+    ],
+    "elapsed_seconds": 0.5619683265686035
+  },
+  "phase5_mutual_information": {
+    "n_tests": 732,
+    "raw_significant": 41,
+    "fdr_significant": 0,
+    "top10_mi_aggregate": [
+      {
+        "weather": "pressure",
+        "lottery": "high_ratio",
+        "mi": 0.023966040187155535,
+        "p": 0.029850746268656716
+      },
+      {
+        "weather": "humidity_range",
+        "lottery": "draw_sum",
+        "mi": 0.02228941737678536,
+        "p": 0.06467661691542288
+      },
+      {
+        "weather": "humidity_range",
+        "lottery": "draw_mean",
+        "mi": 0.02228941737678536,
+        "p": 0.03980099502487562
+      },
+      {
+        "weather": "apparent_temp",
+        "lottery": "draw_range",
+        "mi": 0.020354619791616457,
+        "p": 0.04477611940298507
+      },
+      {
+        "weather": "wind_speed",
+        "lottery": "odd_ratio",
+        "mi": 0.020014388067062683,
+        "p": 0.029850746268656716
+      },
+      {
+        "weather": "is_high_pressure",
+        "lottery": "draw_range",
+        "mi": 0.01798624628570744,
+        "p": 0.024875621890547265
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "draw_std",
+        "mi": 0.01780591640985474,
+        "p": 0.1044776119402985
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "draw_sum",
+        "mi": 0.01706463706611494,
+        "p": 0.07462686567164178
+      },
+      {
+        "weather": "pressure_range",
+        "lottery": "draw_mean",
+        "mi": 0.01706463706611494,
+        "p": 0.06965174129353234
+      },
+      {
+        "weather": "wind_speed",
+        "lottery": "draw_range",
+        "mi": 0.01676710529812553,
+        "p": 0.07960199004975124
+      }
+    ],
+    "total_time_seconds": 981.9312677383423,
+    "elapsed_seconds": 987.8371109962463
+  },
+  "phase6_logistic_regression": {
+    "n_tests": 54,
+    "raw_significant": 2,
+    "fdr_significant": 0,
+    "expected_by_chance": 2.7,
+    "top_significant": [
+      {
+        "number": 4,
+        "lr_pval": 0.0021605035346358653,
+        "pseudo_r2": 0.024135476206636697
+      },
+      {
+        "number": 24,
+        "lr_pval": 0.03118968669523395,
+        "pseudo_r2": 0.019337967012455604
+      },
+      {
+        "number": 33,
+        "lr_pval": 0.052275307558993726,
+        "pseudo_r2": 0.018617287287107098
+      },
+      {
+        "number": 47,
+        "lr_pval": 0.06397459522392936,
+        "pseudo_r2": 0.01868531529721751
+      },
+      {
+        "number": 25,
+        "lr_pval": 0.07506232766820062,
+        "pseudo_r2": 0.014285290215845237
+      },
+      {
+        "number": 11,
+        "lr_pval": 0.07518455762790288,
+        "pseudo_r2": 0.015351898504585404
+      },
+      {
+        "number": 27,
+        "lr_pval": 0.08403401427965845,
+        "pseudo_r2": 0.014540240385298109
+      },
+      {
+        "number": 34,
+        "lr_pval": 0.1226707048914275,
+        "pseudo_r2": 0.01785346050112857
+      },
+      {
+        "number": 3,
+        "lr_pval": 0.1486855999100195,
+        "pseudo_r2": 0.01633741339370942
+      },
+      {
+        "number": 54,
+        "lr_pval": 0.15558907641060254,
+        "pseudo_r2": 0.012852332789076826
+      }
+    ],
+    "l1_feature_selection_counts": {
+      "apparent_temp": 31,
+      "humidity": 50,
+      "wind_speed": 54,
+      "precipitation": 51,
+      "temp_range": 52,
+      "pressure_range": 52,
+      "humidity_range": 51,
+      "is_rainy": 50,
+      "is_high_pressure": 51,
+      "pressure_delta_1d": 48,
+      "sin_doy": 52,
+      "cos_doy": 47,
+      "post_aug2021": 46,
+      "temp": 33,
+      "pressure": 47
+    },
+    "elapsed_seconds": 5.667283058166504
+  },
+  "phase7_ols_regression": {
+    "draw_sum": {
+      "r_squared": 0.006756333138103421,
+      "adj_r_squared": -0.0006010273571697144,
+      "f_statistic": 0.8277338393102275,
+      "f_pvalue": 0.6471704213059444,
+      "significant_predictors": [
+        {
+          "name": "const",
+          "coef": 163.18775688596847,
+          "pval": 0.0,
+          "tstat": 178.5450608434188
+        },
+        {
+          "name": "sin_doy",
+          "coef": -2.3318604719511544,
+          "pval": 0.039226486134783106,
+          "tstat": -2.0618030967189505
+        }
+      ],
+      "n_obs": 2041
+    },
+    "draw_range": {
+      "r_squared": 0.008600304499266076,
+      "adj_r_squared": 0.001256603051112637,
+      "f_statistic": 1.1391470367727752,
+      "f_pvalue": 0.3146936194082091,
+      "significant_predictors": [
+        {
+          "name": "const",
+          "coef": 38.971990381408,
+          "pval": 0.0,
+          "tstat": 175.07310411661953
+        }
+      ],
+      "n_obs": 2041
+    },
+    "odd_ratio": {
+      "r_squared": 0.006909865693950801,
+      "adj_r_squared": -0.0004463575231310468,
+      "f_statistic": 1.0212081508695798,
+      "f_pvalue": 0.4293690738339296,
+      "significant_predictors": [
+        {
+          "name": "const",
+          "coef": 0.4974785093157186,
+          "pval": 0.0,
+          "tstat": 106.00810081429104
+        }
+      ],
+      "n_obs": 2041
+    },
+    "high_ratio": {
+      "r_squared": 0.003852850931126861,
+      "adj_r_squared": -0.0035260168397535097,
+      "f_statistic": 0.47850644342478266,
+      "f_pvalue": 0.9522248113750699,
+      "significant_predictors": [
+        {
+          "name": "const",
+          "coef": 0.48724651789088386,
+          "pval": 0.0,
+          "tstat": 101.29771995474499
+        }
+      ],
+      "n_obs": 2041
+    },
+    "elapsed_seconds": 0.02742624282836914
+  },
+  "phase8_granger_causality": {
+    "n_tests": 48,
+    "raw_significant": 2,
+    "fdr_significant": 0,
+    "expected_by_chance": 2.4000000000000004,
+    "top10": [
+      {
+        "weather": "precipitation",
+        "target": "draw_sum",
+        "p": 0.031802054770950175,
+        "best_lag": 2
+      },
+      {
+        "weather": "pressure_range",
+        "target": "odd_ratio",
+        "p": 0.03476588482013669,
+        "best_lag": 3
+      },
+      {
+        "weather": "precipitation",
+        "target": "high_ratio",
+        "p": 0.05309824247464861,
+        "best_lag": 2
+      },
+      {
+        "weather": "pressure_delta_1d",
+        "target": "high_ratio",
+        "p": 0.06095755162327173,
+        "best_lag": 3
+      },
+      {
+        "weather": "humidity_range",
+        "target": "high_ratio",
+        "p": 0.06913882703340776,
+        "best_lag": 3
+      },
+      {
+        "weather": "humidity_range",
+        "target": "draw_range",
+        "p": 0.08052427167131779,
+        "best_lag": 3
+      },
+      {
+        "weather": "is_rainy",
+        "target": "draw_range",
+        "p": 0.0912608492431222,
+        "best_lag": 3
+      },
+      {
+        "weather": "precipitation",
+        "target": "draw_range",
+        "p": 0.11225525029210343,
+        "best_lag": 3
+      },
+      {
+        "weather": "is_high_pressure",
+        "target": "odd_ratio",
+        "p": 0.12610643603301844,
+        "best_lag": 1
+      },
+      {
+        "weather": "wind_speed",
+        "target": "draw_range",
+        "p": 0.1456531779613448,
+        "best_lag": 1
+      }
+    ],
+    "granger_details": {
+      "draw_sum": {
+        "temp": {
+          "min_p": 0.7076159597757989,
+          "best_lag": 3
+        },
+        "apparent_temp": {
+          "min_p": 0.7136334877151409,
+          "best_lag": 3
+        },
+        "pressure": {
+          "min_p": 0.5743305051522071,
+          "best_lag": 1
+        },
+        "humidity": {
+          "min_p": 0.8660327149568725,
+          "best_lag": 1
+        },
+        "wind_speed": {
+          "min_p": 0.637377346344362,
+          "best_lag": 2
+        },
+        "precipitation": {
+          "min_p": 0.031802054770950175,
+          "best_lag": 2
+        },
+        "temp_range": {
+          "min_p": 0.22957966366557078,
+          "best_lag": 3
+        },
+        "pressure_range": {
+          "min_p": 0.8218703490643665,
+          "best_lag": 2
+        },
+        "humidity_range": {
+          "min_p": 0.5050829557004582,
+          "best_lag": 3
+        },
+        "is_rainy": {
+          "min_p": 0.23786637218985962,
+          "best_lag": 2
+        },
+        "is_high_pressure": {
+          "min_p": 0.2224371270698262,
+          "best_lag": 1
+        },
+        "pressure_delta_1d": {
+          "min_p": 0.18389000571954145,
+          "best_lag": 3
+        }
+      },
+      "draw_range": {
+        "temp": {
+          "min_p": 0.4183308805518401,
+          "best_lag": 1
+        },
+        "apparent_temp": {
+          "min_p": 0.4837948606246109,
+          "best_lag": 1
+        },
+        "pressure": {
+          "min_p": 0.5360000099807576,
+          "best_lag": 1
+        },
+        "humidity": {
+          "min_p": 0.7273173453525321,
+          "best_lag": 3
+        },
+        "wind_speed": {
+          "min_p": 0.1456531779613448,
+          "best_lag": 1
+        },
+        "precipitation": {
+          "min_p": 0.11225525029210343,
+          "best_lag": 3
+        },
+        "temp_range": {
+          "min_p": 0.35287833303053623,
+          "best_lag": 1
+        },
+        "pressure_range": {
+          "min_p": 0.40829847121606955,
+          "best_lag": 1
+        },
+        "humidity_range": {
+          "min_p": 0.08052427167131779,
+          "best_lag": 3
+        },
+        "is_rainy": {
+          "min_p": 0.0912608492431222,
+          "best_lag": 3
+        },
+        "is_high_pressure": {
+          "min_p": 0.6832896097194923,
+          "best_lag": 1
+        },
+        "pressure_delta_1d": {
+          "min_p": 0.3766577910522417,
+          "best_lag": 1
+        }
+      },
+      "odd_ratio": {
+        "temp": {
+          "min_p": 0.4530036870563795,
+          "best_lag": 2
+        },
+        "apparent_temp": {
+          "min_p": 0.40582341048994736,
+          "best_lag": 1
+        },
+        "pressure": {
+          "min_p": 0.2528398045740886,
+          "best_lag": 2
+        },
+        "humidity": {
+          "min_p": 0.6111582211126959,
+          "best_lag": 3
+        },
+        "wind_speed": {
+          "min_p": 0.19575017482633003,
+          "best_lag": 3
+        },
+        "precipitation": {
+          "min_p": 0.5027388296603673,
+          "best_lag": 1
+        },
+        "temp_range": {
+          "min_p": 0.28222455523816614,
+          "best_lag": 3
+        },
+        "pressure_range": {
+          "min_p": 0.03476588482013669,
+          "best_lag": 3
+        },
+        "humidity_range": {
+          "min_p": 0.621033146891101,
+          "best_lag": 3
+        },
+        "is_rainy": {
+          "min_p": 0.7186610048614974,
+          "best_lag": 1
+        },
+        "is_high_pressure": {
+          "min_p": 0.12610643603301844,
+          "best_lag": 1
+        },
+        "pressure_delta_1d": {
+          "min_p": 0.4782105530889582,
+          "best_lag": 3
+        }
+      },
+      "high_ratio": {
+        "temp": {
+          "min_p": 0.677051563036584,
+          "best_lag": 3
+        },
+        "apparent_temp": {
+          "min_p": 0.6946857496149699,
+          "best_lag": 3
+        },
+        "pressure": {
+          "min_p": 0.3185339224192293,
+          "best_lag": 1
+        },
+        "humidity": {
+          "min_p": 0.7325045335740958,
+          "best_lag": 1
+        },
+        "wind_speed": {
+          "min_p": 0.7665448610200974,
+          "best_lag": 1
+        },
+        "precipitation": {
+          "min_p": 0.05309824247464861,
+          "best_lag": 2
+        },
+        "temp_range": {
+          "min_p": 0.17965855259808478,
+          "best_lag": 3
+        },
+        "pressure_range": {
+          "min_p": 0.6184056011772788,
+          "best_lag": 2
+        },
+        "humidity_range": {
+          "min_p": 0.06913882703340776,
+          "best_lag": 3
+        },
+        "is_rainy": {
+          "min_p": 0.20029579799358393,
+          "best_lag": 2
+        },
+        "is_high_pressure": {
+          "min_p": 0.332166899130547,
+          "best_lag": 3
+        },
+        "pressure_delta_1d": {
+          "min_p": 0.06095755162327173,
+          "best_lag": 3
+        }
+      }
+    },
+    "elapsed_seconds": 0.38639354705810547
+  },
+  "phase9_random_forest": {
+    "rf_regression_draw_sum": {
+      "cv_r2_mean": -0.021789286436702148,
+      "cv_r2_std": 0.005404730402226501,
+      "feature_importances": {
+        "temp": 0.060030857270480735,
+        "apparent_temp": 0.06919902505495026,
+        "pressure": 0.10419395725500032,
+        "humidity": 0.08713227444683509,
+        "wind_speed": 0.09564328784228215,
+        "precipitation": 0.08125288607342057,
+        "temp_range": 0.07199877473161266,
+        "pressure_range": 0.0900027651390047,
+        "humidity_range": 0.08397084586641664,
+        "is_rainy": 0.002045966362900742,
+        "is_high_pressure": 0.0036396699067182976,
+        "pressure_delta_1d": 0.08211052244353112,
+        "sin_doy": 0.08549633154639315,
+        "cos_doy": 0.07846345239772096,
+        "post_aug2021": 0.004819383662732702
+      }
+    },
+    "rf_classification_per_number": {
+      "auc_mean": 0.5043252141341813,
+      "auc_std": 0.024069397678618768,
+      "auc_min": 0.45612983714841554,
+      "auc_max": 0.5581265153047726,
+      "n_above_055": 2,
+      "n_above_053": 9,
+      "all_aucs": {
+        "1": 0.5301138680133766,
+        "2": 0.5134736064968622,
+        "3": 0.4956049786884499,
+        "4": 0.5581265153047726,
+        "5": 0.4966058766854612,
+        "6": 0.5128291153291153,
+        "7": 0.5177108179120535,
+        "8": 0.504778550463263,
+        "9": 0.49055726309146747,
+        "10": 0.456383633201815,
+        "11": 0.5218382346832108,
+        "12": 0.5069157292533,
+        "13": 0.5501846035455464,
+        "14": 0.5305830960808453,
+        "15": 0.47161548519129093,
+        "16": 0.5363550348070079,
+        "17": 0.48230316573395066,
+        "18": 0.48995068580725887,
+        "19": 0.5343634571146894,
+        "20": 0.5118939104858187,
+        "21": 0.45612983714841554,
+        "22": 0.49586384153959984,
+        "23": 0.48041964725303377,
+        "24": 0.5013224199917486,
+        "25": 0.5065719938228836,
+        "26": 0.5297791159611267,
+        "27": 0.46573776955311413,
+        "28": 0.5096658478507793,
+        "29": 0.4668950378460705,
+        "30": 0.5240753970891208,
+        "31": 0.5277659480081626,
+        "32": 0.4776469620620244,
+        "33": 0.4907805253683386,
+        "34": 0.5302585173992426,
+        "35": 0.5142021658600899,
+        "36": 0.48882710723619816,
+        "37": 0.47627614780345545,
+        "38": 0.4754036558181574,
+        "39": 0.5267757566052065,
+        "40": 0.5315981942402072,
+        "41": 0.48887880839270786,
+        "42": 0.5448832844064444,
+        "43": 0.5028762619985939,
+        "44": 0.52772675706375,
+        "45": 0.47149010977213557,
+        "46": 0.48230162802747933,
+        "47": 0.5224291797921201,
+        "48": 0.5060096380437049,
+        "49": 0.5092255081775824,
+        "50": 0.5109714489807942,
+        "51": 0.4763726143241912,
+        "52": 0.5151393219575038,
+        "53": 0.5014046766570825,
+        "54": 0.4856688093051729
+      }
+    },
+    "elapsed_seconds": 63.65668082237244
+  },
+  "phase10_effect_size": {
+    "cohens_d": {
+      "hot_vs_cold": {
+        "n_high": 1020,
+        "n_low": 1021,
+        "features": {
+          "draw_sum": {
+            "cohens_d": 0.033517156078169776,
+            "mean_high": 163.54901960784315,
+            "mean_low": 162.34084231145934,
+            "diff": 1.208177296383809
+          },
+          "draw_mean": {
+            "cohens_d": 0.03351715607816918,
+            "mean_high": 27.258169934640524,
+            "mean_low": 27.056807051909892,
+            "diff": 0.2013628827306313
+          },
+          "draw_std": {
+            "cohens_d": -0.002653518394085336,
+            "mean_high": 15.190292480413454,
+            "mean_low": 15.19960386227742,
+            "diff": -0.009311381863966517
+          },
+          "draw_range": {
+            "cohens_d": 0.014974768775900515,
+            "mean_high": 38.94291126102473,
+            "mean_low": 38.81805143364816,
+            "diff": 0.12485982737657508
+          },
+          "odd_ratio": {
+            "cohens_d": -0.0842688763970625,
+            "mean_high": 0.4915032679738562,
+            "mean_low": 0.5073457394711067,
+            "diff": -0.015842471497250543
+          },
+          "high_ratio": {
+            "cohens_d": 0.04248574554044945,
+            "mean_high": 0.4918300653594771,
+            "mean_low": 0.48367613450865166,
+            "diff": 0.008153930850825442
+          }
+        }
+      },
+      "high_vs_low_pressure": {
+        "n_high": 1013,
+        "n_low": 1028,
+        "features": {
+          "draw_sum": {
+            "cohens_d": -0.02282999690092981,
+            "mean_high": 162.53010858835142,
+            "mean_low": 163.35311284046693,
+            "diff": -0.8230042521155099
+          },
+          "draw_mean": {
+            "cohens_d": -0.02282999690092942,
+            "mean_high": 27.088351431391906,
+            "mean_low": 27.22551880674449,
+            "diff": -0.1371673753525826
+          },
+          "draw_std": {
+            "cohens_d": -0.02395568353284119,
+            "mean_high": 15.152613468634632,
+            "mean_low": 15.236669678677128,
+            "diff": -0.08405621004249575
+          },
+          "draw_range": {
+            "cohens_d": -0.0218582616502404,
+            "mean_high": 38.78865670333133,
+            "mean_low": 38.9709054080986,
+            "diff": -0.18224870476727517
+          },
+          "odd_ratio": {
+            "cohens_d": 0.04075964649091063,
+            "mean_high": 0.5032905561039817,
+            "mean_low": 0.49562256809338523,
+            "diff": 0.007667988010596427
+          },
+          "high_ratio": {
+            "cohens_d": -0.02135882713489721,
+            "mean_high": 0.4856860809476802,
+            "mean_low": 0.4897859922178988,
+            "diff": -0.004099911270218637
+          }
+        }
+      },
+      "rainy_vs_dry": {
+        "n_high": 693,
+        "n_low": 1348,
+        "features": {
+          "draw_sum": {
+            "cohens_d": -0.024463023731806408,
+            "mean_high": 162.36219336219335,
+            "mean_low": 163.2440652818991,
+            "diff": -0.881871919705759
+          },
+          "draw_mean": {
+            "cohens_d": -0.024463023731805228,
+            "mean_high": 27.060365560365565,
+            "mean_low": 27.20734421364985,
+            "diff": -0.14697865328428605
+          },
+          "draw_std": {
+            "cohens_d": 0.036985227666973944,
+            "mean_high": 15.280654421507466,
+            "mean_low": 15.150890474259862,
+            "diff": 0.12976394724760354
+          },
+          "draw_range": {
+            "cohens_d": 0.05379407080154126,
+            "mean_high": 39.17660303863224,
+            "mean_low": 38.72820036663788,
+            "diff": 0.44840267199435857
+          },
+          "odd_ratio": {
+            "cohens_d": -0.02249461809462622,
+            "mean_high": 0.4966329966329966,
+            "mean_low": 0.5008654797230465,
+            "diff": -0.004232483090049921
+          },
+          "high_ratio": {
+            "cohens_d": 0.007456641799073054,
+            "mean_high": 0.48869648869648863,
+            "mean_low": 0.48726508407517305,
+            "diff": 0.0014314046213155796
+          }
+        }
+      },
+      "humid_vs_dry": {
+        "n_high": 1016,
+        "n_low": 1025,
+        "features": {
+          "draw_sum": {
+            "cohens_d": -0.14097185213362484,
+            "mean_high": 160.3986220472441,
+            "mean_low": 165.46829268292683,
+            "diff": -5.069670635682741
+          },
+          "draw_mean": {
+            "cohens_d": -0.14097185213362465,
+            "mean_high": 26.733103674540683,
+            "mean_low": 27.578048780487805,
+            "diff": -0.8449451059471222
+          },
+          "draw_std": {
+            "cohens_d": 0.02372494960233281,
+            "mean_high": 15.236757355080556,
+            "mean_low": 15.15351063477573,
+            "diff": 0.08324672030482638
+          },
+          "draw_range": {
+            "cohens_d": 0.06284209368336825,
+            "mean_high": 39.14347259892759,
+            "mean_low": 38.619738379989826,
+            "diff": 0.5237342189377614
+          },
+          "odd_ratio": {
+            "cohens_d": -0.033882347210619106,
+            "mean_high": 0.4962270341207349,
+            "mean_low": 0.5026016260162601,
+            "diff": -0.00637459189552525
+          },
+          "high_ratio": {
+            "cohens_d": -0.08913337074387058,
+            "mean_high": 0.47916666666666663,
+            "mean_low": 0.4962601626016261,
+            "diff": -0.017093495934959457
+          }
+        }
+      },
+      "windy_vs_calm": {
+        "n_high": 1020,
+        "n_low": 1021,
+        "features": {
+          "draw_sum": {
+            "cohens_d": -0.040645229344578086,
+            "mean_high": 162.21176470588236,
+            "mean_low": 163.6767874632713,
+            "diff": -1.4650227573889367
+          },
+          "draw_mean": {
+            "cohens_d": -0.040645229344578884,
+            "mean_high": 27.03529411764706,
+            "mean_low": 27.279464577211886,
+            "diff": -0.24417045956482752
+          },
+          "draw_std": {
+            "cohens_d": 0.017780404288937176,
+            "mean_high": 15.22616087208772,
+            "mean_low": 15.16377060125122,
+            "diff": 0.06239027083649873
+          },
+          "draw_range": {
+            "cohens_d": 0.0073172755199709776,
+            "mean_high": 38.91097212958525,
+            "mean_low": 38.84995928288252,
+            "diff": 0.06101284670272378
+          },
+          "odd_ratio": {
+            "cohens_d": -0.01823067928974987,
+            "mean_high": 0.49771241830065355,
+            "mean_low": 0.5011426705843944,
+            "diff": -0.0034302522837408866
+          },
+          "high_ratio": {
+            "cohens_d": 0.005042131355743664,
+            "mean_high": 0.48823529411764705,
+            "mean_low": 0.48726738491674826,
+            "diff": 0.0009679092008987866
+          }
+        }
+      }
+    },
+    "top_frequency_deviations_pressure": [
+      {
+        "number": 27,
+        "freq_high_pressure": 0.09674234945705824,
+        "freq_low_pressure": 0.13132295719844359,
+        "deviation": -0.03458060774138534,
+        "abs_deviation": 0.03458060774138534
+      },
+      {
+        "number": 31,
+        "freq_high_pressure": 0.14215202369200394,
+        "freq_low_pressure": 0.10894941634241245,
+        "deviation": 0.03320260734959149,
+        "abs_deviation": 0.03320260734959149
+      },
+      {
+        "number": 30,
+        "freq_high_pressure": 0.11648568608094768,
+        "freq_low_pressure": 0.08463035019455253,
+        "deviation": 0.03185533588639515,
+        "abs_deviation": 0.03185533588639515
+      },
+      {
+        "number": 24,
+        "freq_high_pressure": 0.13129318854886476,
+        "freq_low_pressure": 0.10019455252918288,
+        "deviation": 0.03109863601968188,
+        "abs_deviation": 0.03109863601968188
+      },
+      {
+        "number": 17,
+        "freq_high_pressure": 0.10365251727541955,
+        "freq_low_pressure": 0.13424124513618677,
+        "deviation": -0.030588727860767218,
+        "abs_deviation": 0.030588727860767218
+      },
+      {
+        "number": 14,
+        "freq_high_pressure": 0.10266535044422508,
+        "freq_low_pressure": 0.13229571984435798,
+        "deviation": -0.029630369400132903,
+        "abs_deviation": 0.029630369400132903
+      },
+      {
+        "number": 19,
+        "freq_high_pressure": 0.1362290227048371,
+        "freq_low_pressure": 0.10992217898832685,
+        "deviation": 0.026306843716510264,
+        "abs_deviation": 0.026306843716510264
+      },
+      {
+        "number": 32,
+        "freq_high_pressure": 0.08983218163869694,
+        "freq_low_pressure": 0.11575875486381323,
+        "deviation": -0.025926573225116295,
+        "abs_deviation": 0.025926573225116295
+      },
+      {
+        "number": 13,
+        "freq_high_pressure": 0.1194471865745311,
+        "freq_low_pressure": 0.09533073929961089,
+        "deviation": 0.02411644727492021,
+        "abs_deviation": 0.02411644727492021
+      },
+      {
+        "number": 20,
+        "freq_high_pressure": 0.09674234945705824,
+        "freq_low_pressure": 0.11770428015564202,
+        "deviation": -0.020961930698583778,
+        "abs_deviation": 0.020961930698583778
+      }
+    ],
+    "extra_correct_balls": {
+      "base_rate_per_number": 0.1111111111111111,
+      "max_conditional_deviation": 0.0224860764355675,
+      "upper_bound_extra_per_draw": 0.134916458613405,
+      "pct_improvement": 2.2486076435567504
+    },
+    "elapsed_seconds": 0.09146976470947266
+  },
+  "phase11_plots": {
+    "files_generated": [
+      "weather_corr_heatmap.png",
+      "weather_pointbiserial_heatmap.png",
+      "weather_mi_heatmap.png",
+      "weather_draw_sum_scatter.png",
+      "weather_ml_auc_distribution.png",
+      "weather_seasonal_detrending.png"
+    ],
+    "elapsed_seconds": 3.9553258419036865
+  },
+  "summary": {
+    "total_elapsed_seconds": 1062.3478109836578,
+    "n_draws_analyzed": 2041,
+    "conclusion": "Correlation Analysis: 49 of 864 tests raw significant (p<0.05), expected ~43 by chance. FDR-surviving: 0, Bonferroni-surviving: 0.\nMutual Information: 41 raw significant, 0 FDR-surviving.\nLogistic Regression (per number): 2 of 54 omnibus tests significant (expected ~2.7).\nRandom Forest: draw_sum CV R2=-0.0218, per-number AUC mean=0.5043 (null=0.5000).\nEffect Size: Upper-bound extra correct balls per draw = 0.1349 (2.25% improvement).\nVERDICT: No meaningful weather-lottery correlation detected. Results are consistent with the lottery being independent of Austin weather conditions. Any raw significant results are consistent with multiple-testing false positives."
+  }
+}

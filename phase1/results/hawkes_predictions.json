@@ -1,0 +1,1333 @@
+{
+  "next_draw": {
+    "all_numbers": {
+      "1": {
+        "probability": 0.106961,
+        "delta_logodds": 0.031533
+      },
+      "2": {
+        "probability": 0.102509,
+        "delta_logodds": -0.015956
+      },
+      "3": {
+        "probability": 0.10163,
+        "delta_logodds": -0.034816
+      },
+      "4": {
+        "probability": 0.123261,
+        "delta_logodds": 0.030358
+      },
+      "5": {
+        "probability": 0.118624,
+        "delta_logodds": 0.054084
+      },
+      "6": {
+        "probability": 0.105271,
+        "delta_logodds": -0.062973
+      },
+      "7": {
+        "probability": 0.111076,
+        "delta_logodds": -0.028801
+      },
+      "8": {
+        "probability": 0.129815,
+        "delta_logodds": 0.02952
+      },
+      "9": {
+        "probability": 0.115109,
+        "delta_logodds": 0.033049
+      },
+      "10": {
+        "probability": 0.10511,
+        "delta_logodds": -0.082087
+      },
+      "11": {
+        "probability": 0.098478,
+        "delta_logodds": 0.001405
+      },
+      "12": {
+        "probability": 0.116034,
+        "delta_logodds": -0.000816
+      },
+      "13": {
+        "probability": 0.100754,
+        "delta_logodds": -0.09866
+      },
+      "14": {
+        "probability": 0.111198,
+        "delta_logodds": -0.053057
+      },
+      "15": {
+        "probability": 0.120375,
+        "delta_logodds": -0.021001
+      },
+      "16": {
+        "probability": 0.115276,
+        "delta_logodds": 0.043447
+      },
+      "17": {
+        "probability": 0.120204,
+        "delta_logodds": 0.005872
+      },
+      "18": {
+        "probability": 0.117454,
+        "delta_logodds": 0.034235
+      },
+      "19": {
+        "probability": 0.121749,
+        "delta_logodds": 0.004049
+      },
+      "20": {
+        "probability": 0.102546,
+        "delta_logodds": -0.038595
+      },
+      "21": {
+        "probability": 0.119965,
+        "delta_logodds": -0.000492
+      },
+      "22": {
+        "probability": 0.113731,
+        "delta_logodds": 0.023823
+      },
+      "23": {
+        "probability": 0.10576,
+        "delta_logodds": 0.01426
+      },
+      "24": {
+        "probability": 0.117893,
+        "delta_logodds": 0.042763
+      },
+      "25": {
+        "probability": 0.112216,
+        "delta_logodds": 0.01749
+      },
+      "26": {
+        "probability": 0.124237,
+        "delta_logodds": -0.001039
+      },
+      "27": {
+        "probability": 0.117443,
+        "delta_logodds": 0.00443
+      },
+      "28": {
+        "probability": 0.105971,
+        "delta_logodds": -0.029024
+      },
+      "29": {
+        "probability": 0.113676,
+        "delta_logodds": 0.001562
+      },
+      "30": {
+        "probability": 0.098467,
+        "delta_logodds": -0.032456
+      },
+      "31": {
+        "probability": 0.122268,
+        "delta_logodds": -0.011279
+      },
+      "32": {
+        "probability": 0.100539,
+        "delta_logodds": -0.037547
+      },
+      "33": {
+        "probability": 0.096642,
+        "delta_logodds": -0.034029
+      },
+      "34": {
+        "probability": 0.114016,
+        "delta_logodds": 0.009252
+      },
+      "35": {
+        "probability": 0.115567,
+        "delta_logodds": -0.022158
+      },
+      "36": {
+        "probability": 0.113078,
+        "delta_logodds": 0.052847
+      },
+      "37": {
+        "probability": 0.111678,
+        "delta_logodds": -0.022712
+      },
+      "38": {
+        "probability": 0.127488,
+        "delta_logodds": 0.052604
+      },
+      "39": {
+        "probability": 0.107606,
+        "delta_logodds": -0.051495
+      },
+      "40": {
+        "probability": 0.103142,
+        "delta_logodds": -0.027555
+      },
+      "41": {
+        "probability": 0.110451,
+        "delta_logodds": 0.012942
+      },
+      "42": {
+        "probability": 0.11029,
+        "delta_logodds": -0.010779
+      },
+      "43": {
+        "probability": 0.102888,
+        "delta_logodds": -0.070893
+      },
+      "44": {
+        "probability": 0.117461,
+        "delta_logodds": 0.017246
+      },
+      "45": {
+        "probability": 0.088995,
+        "delta_logodds": -0.075633
+      },
+      "46": {
+        "probability": 0.101302,
+        "delta_logodds": 0.018241
+      },
+      "47": {
+        "probability": 0.102344,
+        "delta_logodds": -0.008418
+      },
+      "48": {
+        "probability": 0.099695,
+        "delta_logodds": 0.015041
+      },
+      "49": {
+        "probability": 0.1219,
+        "delta_logodds": 0.021818
+      },
+      "50": {
+        "probability": 0.098689,
+        "delta_logodds": -0.001102
+      },
+      "51": {
+        "probability": 0.106309,
+        "delta_logodds": 0.01542
+      },
+      "52": {
+        "probability": 0.110367,
+        "delta_logodds": -0.065693
+      },
+      "53": {
+        "probability": 0.103509,
+        "delta_logodds": 0.018333
+      },
+      "54": {
+        "probability": 0.110639,
+        "delta_logodds": -0.011599
+      }
+    },
+    "top_10": [
+      {
+        "number": 8,
+        "probability": 0.129815,
+        "delta_logodds": 0.02952
+      },
+      {
+        "number": 38,
+        "probability": 0.127488,
+        "delta_logodds": 0.052604
+      },
+      {
+        "number": 26,
+        "probability": 0.124237,
+        "delta_logodds": -0.001039
+      },
+      {
+        "number": 4,
+        "probability": 0.123261,
+        "delta_logodds": 0.030358
+      },
+      {
+        "number": 31,
+        "probability": 0.122268,
+        "delta_logodds": -0.011279
+      },
+      {
+        "number": 49,
+        "probability": 0.1219,
+        "delta_logodds": 0.021818
+      },
+      {
+        "number": 19,
+        "probability": 0.121749,
+        "delta_logodds": 0.004049
+      },
+      {
+        "number": 15,
+        "probability": 0.120375,
+        "delta_logodds": -0.021001
+      },
+      {
+        "number": 17,
+        "probability": 0.120204,
+        "delta_logodds": 0.005872
+      },
+      {
+        "number": 21,
+        "probability": 0.119965,
+        "delta_logodds": -0.000492
+      }
+    ],
+    "bottom_10": [
+      {
+        "number": 3,
+        "probability": 0.10163,
+        "delta_logodds": -0.034816
+      },
+      {
+        "number": 46,
+        "probability": 0.101302,
+        "delta_logodds": 0.018241
+      },
+      {
+        "number": 13,
+        "probability": 0.100754,
+        "delta_logodds": -0.09866
+      },
+      {
+        "number": 32,
+        "probability": 0.100539,
+        "delta_logodds": -0.037547
+      },
+      {
+        "number": 48,
+        "probability": 0.099695,
+        "delta_logodds": 0.015041
+      },
+      {
+        "number": 50,
+        "probability": 0.098689,
+        "delta_logodds": -0.001102
+      },
+      {
+        "number": 11,
+        "probability": 0.098478,
+        "delta_logodds": 0.001405
+      },
+      {
+        "number": 30,
+        "probability": 0.098467,
+        "delta_logodds": -0.032456
+      },
+      {
+        "number": 33,
+        "probability": 0.096642,
+        "delta_logodds": -0.034029
+      },
+      {
+        "number": 45,
+        "probability": 0.088995,
+        "delta_logodds": -0.075633
+      }
+    ]
+  },
+  "historical_backtest": [
+    {
+      "draw_index": 2258,
+      "actual_numbers": [
+        17,
+        21,
+        24,
+        26,
+        41,
+        46
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2259,
+      "actual_numbers": [
+        7,
+        15,
+        27,
+        28,
+        44,
+        46
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2260,
+      "actual_numbers": [
+        8,
+        12,
+        13,
+        21,
+        29,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2261,
+      "actual_numbers": [
+        4,
+        10,
+        12,
+        15,
+        28,
+        54
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2262,
+      "actual_numbers": [
+        13,
+        19,
+        37,
+        45,
+        47,
+        49
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2263,
+      "actual_numbers": [
+        14,
+        18,
+        28,
+        30,
+        31,
+        40
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2264,
+      "actual_numbers": [
+        4,
+        11,
+        13,
+        24,
+        33,
+        45
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2265,
+      "actual_numbers": [
+        10,
+        14,
+        16,
+        23,
+        34,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2266,
+      "actual_numbers": [
+        13,
+        14,
+        24,
+        36,
+        50,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2267,
+      "actual_numbers": [
+        1,
+        3,
+        16,
+        31,
+        44,
+        45
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2268,
+      "actual_numbers": [
+        3,
+        8,
+        13,
+        15,
+        26,
+        53
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 2
+    },
+    {
+      "draw_index": 2269,
+      "actual_numbers": [
+        7,
+        17,
+        23,
+        28,
+        39,
+        48
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2270,
+      "actual_numbers": [
+        1,
+        22,
+        24,
+        32,
+        53,
+        54
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2271,
+      "actual_numbers": [
+        11,
+        18,
+        34,
+        38,
+        44,
+        50
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2272,
+      "actual_numbers": [
+        5,
+        8,
+        12,
+        13,
+        32,
+        42
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2273,
+      "actual_numbers": [
+        20,
+        22,
+        25,
+        32,
+        37,
+        53
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2274,
+      "actual_numbers": [
+        1,
+        15,
+        35,
+        40,
+        44,
+        46
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2275,
+      "actual_numbers": [
+        15,
+        17,
+        19,
+        35,
+        38,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2276,
+      "actual_numbers": [
+        10,
+        29,
+        31,
+        43,
+        45,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2277,
+      "actual_numbers": [
+        3,
+        17,
+        24,
+        27,
+        34,
+        47
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2278,
+      "actual_numbers": [
+        5,
+        8,
+        15,
+        32,
+        41,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2279,
+      "actual_numbers": [
+        6,
+        12,
+        15,
+        36,
+        39,
+        41
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2280,
+      "actual_numbers": [
+        27,
+        35,
+        38,
+        42,
+        44,
+        53
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2281,
+      "actual_numbers": [
+        8,
+        9,
+        14,
+        30,
+        33,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2282,
+      "actual_numbers": [
+        13,
+        21,
+        24,
+        28,
+        43,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2283,
+      "actual_numbers": [
+        18,
+        19,
+        23,
+        26,
+        31,
+        40
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 2
+    },
+    {
+      "draw_index": 2284,
+      "actual_numbers": [
+        10,
+        20,
+        28,
+        32,
+        33,
+        49
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2285,
+      "actual_numbers": [
+        14,
+        26,
+        34,
+        35,
+        50,
+        51
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2286,
+      "actual_numbers": [
+        2,
+        7,
+        10,
+        24,
+        25,
+        27
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2287,
+      "actual_numbers": [
+        12,
+        22,
+        26,
+        33,
+        34,
+        49
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 2
+    },
+    {
+      "draw_index": 2288,
+      "actual_numbers": [
+        6,
+        10,
+        29,
+        35,
+        51,
+        54
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2289,
+      "actual_numbers": [
+        3,
+        4,
+        15,
+        32,
+        36,
+        37
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2290,
+      "actual_numbers": [
+        11,
+        22,
+        37,
+        43,
+        52,
+        54
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2291,
+      "actual_numbers": [
+        6,
+        21,
+        24,
+        29,
+        45,
+        53
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2292,
+      "actual_numbers": [
+        19,
+        24,
+        33,
+        42,
+        48,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2293,
+      "actual_numbers": [
+        1,
+        13,
+        17,
+        24,
+        27,
+        32
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2294,
+      "actual_numbers": [
+        3,
+        11,
+        15,
+        30,
+        48,
+        49
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2295,
+      "actual_numbers": [
+        3,
+        5,
+        10,
+        13,
+        30,
+        50
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2296,
+      "actual_numbers": [
+        6,
+        14,
+        20,
+        34,
+        37,
+        50
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2297,
+      "actual_numbers": [
+        17,
+        30,
+        33,
+        39,
+        46,
+        48
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2298,
+      "actual_numbers": [
+        5,
+        21,
+        34,
+        44,
+        45,
+        46
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2299,
+      "actual_numbers": [
+        5,
+        16,
+        25,
+        27,
+        38,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2300,
+      "actual_numbers": [
+        11,
+        12,
+        14,
+        26,
+        29,
+        44
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2301,
+      "actual_numbers": [
+        6,
+        8,
+        11,
+        20,
+        30,
+        41
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2302,
+      "actual_numbers": [
+        11,
+        15,
+        26,
+        28,
+        38,
+        50
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 2
+    },
+    {
+      "draw_index": 2303,
+      "actual_numbers": [
+        2,
+        8,
+        9,
+        21,
+        27,
+        54
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 1
+    },
+    {
+      "draw_index": 2304,
+      "actual_numbers": [
+        3,
+        18,
+        26,
+        32,
+        38,
+        48
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 2
+    },
+    {
+      "draw_index": 2305,
+      "actual_numbers": [
+        3,
+        10,
+        43,
+        45,
+        50,
+        53
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2306,
+      "actual_numbers": [
+        13,
+        15,
+        17,
+        27,
+        35,
+        45
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    },
+    {
+      "draw_index": 2307,
+      "actual_numbers": [
+        14,
+        20,
+        25,
+        45,
+        47,
+        52
+      ],
+      "top_6_predicted": [
+        8,
+        38,
+        26,
+        4,
+        31,
+        49
+      ],
+      "hits": 0
+    }
+  ],
+  "backtest_summary": {
+    "avg_hits": 0.64,
+    "expected_by_chance": 0.667,
+    "n_draws": 50
+  }
+}

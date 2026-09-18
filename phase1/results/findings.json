@@ -1,0 +1,16 @@
+{
+  "analysis_date": "2026-02-14 15:27:08.092662",
+  "n_draws": 2308,
+  "date_range": "2006-04-01 to 2026-02-11",
+  "elapsed_seconds": 38.08456897735596,
+  "n_findings": 1,
+  "findings": [
+    {
+      "category": "Gap Distribution",
+      "description": "Number 14 has unusual gap distribution (mean=8.6 vs expected 9.0, KS p=0.000090)",
+      "p_value": 8.96489286957593e-05,
+      "effect_size": 0.9543946932006633,
+      "details": null
+    }
+  ]
+}

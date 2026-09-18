@@ -1,0 +1,324 @@
+{
+  "metadata": {
+    "analysis_date": "2026-02-25T17:50:21.737575",
+    "data_file": "D:\\projects\\LottAI\\lottotexas.csv",
+    "min_date": "2006-04-01",
+    "num_draws": 2308,
+    "max_lag": 10,
+    "num_surrogates": 100,
+    "fdr_threshold": 0.05
+  },
+  "transfer_entropy": {
+    "significant_pairs": [
+      {
+        "source": 36,
+        "target": 23,
+        "lag": 9,
+        "te_value": 0.0064955911609940065,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.6276225980153799,
+        "interpretation": "Number 36 decreases prob of 23 by 37.2% at lag 9"
+      },
+      {
+        "source": 47,
+        "target": 13,
+        "lag": 9,
+        "te_value": 0.006291444117712894,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.039430939845413,
+        "interpretation": "Number 47 increases prob of 13 by 3.9% at lag 9"
+      },
+      {
+        "source": 42,
+        "target": 31,
+        "lag": 3,
+        "te_value": 0.0057865448517306975,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.2259802454354984,
+        "interpretation": "Number 42 increases prob of 31 by 22.6% at lag 3"
+      },
+      {
+        "source": 27,
+        "target": 9,
+        "lag": 2,
+        "te_value": 0.005574434214871413,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.9589617051671239,
+        "interpretation": "Number 27 decreases prob of 9 by 4.1% at lag 2"
+      },
+      {
+        "source": 12,
+        "target": 18,
+        "lag": 5,
+        "te_value": 0.005170095069921101,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.0942286384670532,
+        "interpretation": "Number 12 increases prob of 18 by 9.4% at lag 5"
+      },
+      {
+        "source": 17,
+        "target": 54,
+        "lag": 1,
+        "te_value": 0.005015438132050701,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.6859801031687546,
+        "interpretation": "Number 17 decreases prob of 54 by 31.4% at lag 1"
+      },
+      {
+        "source": 26,
+        "target": 7,
+        "lag": 3,
+        "te_value": 0.004959547756552894,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.151151675865684,
+        "interpretation": "Number 26 increases prob of 7 by 15.1% at lag 3"
+      },
+      {
+        "source": 2,
+        "target": 32,
+        "lag": 4,
+        "te_value": 0.004815937957452669,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.0046728971962617,
+        "interpretation": "Number 2 increases prob of 32 by 0.5% at lag 4"
+      },
+      {
+        "source": 32,
+        "target": 45,
+        "lag": 5,
+        "te_value": 0.004807564571768588,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.6773320206743785,
+        "interpretation": "Number 32 decreases prob of 45 by 32.3% at lag 5"
+      },
+      {
+        "source": 24,
+        "target": 2,
+        "lag": 4,
+        "te_value": 0.00476733681121919,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.9513672364978676,
+        "interpretation": "Number 24 decreases prob of 2 by 4.9% at lag 4"
+      },
+      {
+        "source": 26,
+        "target": 5,
+        "lag": 7,
+        "te_value": 0.004709748706862093,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.2053811659192826,
+        "interpretation": "Number 26 increases prob of 5 by 20.5% at lag 7"
+      },
+      {
+        "source": 9,
+        "target": 1,
+        "lag": 7,
+        "te_value": 0.004680041479247828,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.8878110578228215,
+        "interpretation": "Number 9 decreases prob of 1 by 11.2% at lag 7"
+      },
+      {
+        "source": 4,
+        "target": 37,
+        "lag": 2,
+        "te_value": 0.004647125347266029,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.129391370727906,
+        "interpretation": "Number 4 increases prob of 37 by 12.9% at lag 2"
+      },
+      {
+        "source": 44,
+        "target": 8,
+        "lag": 7,
+        "te_value": 0.004629162646757161,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.0797133504379368,
+        "interpretation": "Number 44 increases prob of 8 by 8.0% at lag 7"
+      },
+      {
+        "source": 19,
+        "target": 45,
+        "lag": 3,
+        "te_value": 0.004591900181916976,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.9692562592047128,
+        "interpretation": "Number 19 decreases prob of 45 by 3.1% at lag 3"
+      },
+      {
+        "source": 28,
+        "target": 11,
+        "lag": 2,
+        "te_value": 0.004580316617061577,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.8786318142065883,
+        "interpretation": "Number 28 decreases prob of 11 by 12.1% at lag 2"
+      },
+      {
+        "source": 13,
+        "target": 43,
+        "lag": 4,
+        "te_value": 0.004578025237884047,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 0.8177830940988836,
+        "interpretation": "Number 13 decreases prob of 43 by 18.2% at lag 4"
+      },
+      {
+        "source": 51,
+        "target": 36,
+        "lag": 10,
+        "te_value": 0.004551833067378606,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.163817502547266,
+        "interpretation": "Number 51 increases prob of 36 by 16.4% at lag 10"
+      },
+      {
+        "source": 14,
+        "target": 37,
+        "lag": 3,
+        "te_value": 0.004535250469743499,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.0953040474483478,
+        "interpretation": "Number 14 increases prob of 37 by 9.5% at lag 3"
+      },
+      {
+        "source": 47,
+        "target": 40,
+        "lag": 10,
+        "te_value": 0.004483709760257718,
+        "p_value": 0.0,
+        "fdr_p_value": 0.0,
+        "excitation_strength": 1.04676511954993,
+        "interpretation": "Number 47 increases prob of 40 by 4.7% at lag 10"
+      }
+    ],
+    "total_tests": 28620,
+    "fdr_threshold": 0.05,
+    "significant_count": 304
+  },
+  "granger_causality": {
+    "validated_pairs": [
+      {
+        "source": 36,
+        "target": 23,
+        "te_lag": 9,
+        "te_value": 0.0064955911609940065,
+        "granger_best_lag": 1,
+        "granger_p_value": 0.008394553208818467,
+        "granger_significant": true,
+        "agreement": true
+      },
+      {
+        "source": 47,
+        "target": 13,
+        "te_lag": 9,
+        "te_value": 0.006291444117712894,
+        "granger_best_lag": 8,
+        "granger_p_value": 0.26512111811799677,
+        "granger_significant": false,
+        "agreement": false
+      },
+      {
+        "source": 42,
+        "target": 31,
+        "te_lag": 3,
+        "te_value": 0.0057865448517306975,
+        "granger_best_lag": 3,
+        "granger_p_value": 0.2552630369577546,
+        "granger_significant": false,
+        "agreement": false
+      },
+      {
+        "source": 27,
+        "target": 9,
+        "te_lag": 2,
+        "te_value": 0.005574434214871413,
+        "granger_best_lag": 1,
+        "granger_p_value": 0.20603988184998345,
+        "granger_significant": false,
+        "agreement": false
+      },
+      {
+        "source": 12,
+        "target": 18,
+        "te_lag": 5,
+        "te_value": 0.005170095069921101,
+        "granger_best_lag": 4,
+        "granger_p_value": 0.043185219369726295,
+        "granger_significant": true,
+        "agreement": true
+      },
+      {
+        "source": 17,
+        "target": 54,
+        "te_lag": 1,
+        "te_value": 0.005015438132050701,
+        "granger_best_lag": 1,
+        "granger_p_value": 0.06881536671933648,
+        "granger_significant": false,
+        "agreement": false
+      },
+      {
+        "source": 26,
+        "target": 7,
+        "te_lag": 3,
+        "te_value": 0.004959547756552894,
+        "granger_best_lag": 1,
+        "granger_p_value": 0.6186831583718749,
+        "granger_significant": false,
+        "agreement": false
+      },
+      {
+        "source": 2,
+        "target": 32,
+        "te_lag": 4,
+        "te_value": 0.004815937957452669,
+        "granger_best_lag": 3,
+        "granger_p_value": 0.003135759215644689,
+        "granger_significant": true,
+        "agreement": true
+      },
+      {
+        "source": 32,
+        "target": 45,
+        "te_lag": 5,
+        "te_value": 0.004807564571768588,
+        "granger_best_lag": 1,
+        "granger_p_value": 0.00992549349537889,
+        "granger_significant": true,
+        "agreement": true
+      },
+      {
+        "source": 24,
+        "target": 2,
+        "te_lag": 4,
+        "te_value": 0.00476733681121919,
+        "granger_best_lag": 2,
+        "granger_p_value": 0.3417883527138606,
+        "granger_significant": false,
+        "agreement": false
+      }
+    ],
+    "total_validated": 10,
+    "agreement_count": 4
+  }
+}
